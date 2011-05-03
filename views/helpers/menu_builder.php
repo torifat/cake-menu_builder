@@ -118,7 +118,7 @@ class MenuBuilderHelper extends AppHelper {
         $token = array('', false);
         if($hasSubMenu=is_array($item['submenu'])) $token = $this->build('submenu', $item);
         $subMenu = $token[0];
-        $isActive = $token[1] || (Router::normalize($this->here) === Router::normalize($item['url']));
+        $isActive = $token[1] || (!is_null($item['url']) && (Router::normalize($this->here) === Router::normalize($item['url'])));
         
         $arrClass = array();
         if($pos===0) $arrClass[] = $this->settings['firstClass'];
@@ -128,6 +128,10 @@ class MenuBuilderHelper extends AppHelper {
         
         $class = '';
         $arrClass = array_filter($arrClass);
+        if(isset($item['class'])):
+            if(is_array($item['class'])) $arrClass = am($arrClass, $item['class']);
+            else $arrClass[] = $item['class'];
+        endif;
         if(!empty($arrClass)) $class = ' class="'.implode(' ', $arrClass).'"';
         
         if(is_null($item['url'])) $url = sprintf($this->settings['emptyLinkFormat'], $item['title']);
