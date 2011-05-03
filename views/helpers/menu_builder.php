@@ -8,7 +8,7 @@
  * @package MenuBuilder
  * @subpackage MenuBuilder.views.helpers
  */
-App::import('Helper', 'Html');
+App::import('Helper', 'Html', 'Router');
 
 class MenuBuilderHelper extends AppHelper {
 /**
@@ -83,14 +83,22 @@ class MenuBuilderHelper extends AppHelper {
         if(!isset($data[$id])) return;
         
         $out = '';
-        foreach($data[$id] as $pos => $item) :
-            $out .= $this->_buildItem($item, $pos);
-        endforeach;
+        $token = array();
+        $status = false;
+        if(is_array($data[$id])) :
+            foreach($data[$id] as $pos => $item) :
+                $token = $this->_buildItem($item, $pos);
+                $out .= $token[0];
+                $status = $status || $token[1];
+            endforeach;
+        endif;
         
         $class = '';
         if($id!='submenu') $class = ' id="'.$id.'"';
         
-        return sprintf($this->settings['wrapperFormat'], $class, $out);
+        $out = sprintf($this->settings['wrapperFormat'], $class, $out);
+        if($id=='submenu') return array($out, $status);
+        return $out;
     }
     
 /**
@@ -107,9 +115,10 @@ class MenuBuilderHelper extends AppHelper {
         if(is_null($item['title'])) return;
         if($item['separator']) return '';
         
-        $subMenu = '';
-        if($hasSubMenu=is_array($item['submenu'])) $subMenu = $this->build('submenu', $item);
-        $isActive = ($this->here === Router::normalize($item['url']));
+        $token = array('', false);
+        if($hasSubMenu=is_array($item['submenu'])) $token = $this->build('submenu', $item);
+        $subMenu = $token[0];
+        $isActive = $token[1] || (Router::normalize($this->here) === Router::normalize($item['url']));
         
         $arrClass = array();
         if($pos===0) $arrClass[] = $this->settings['firstClass'];
@@ -124,7 +133,7 @@ class MenuBuilderHelper extends AppHelper {
         if(is_null($item['url'])) $url = sprintf($this->settings['emptyLinkFormat'], $item['title']);
         else $url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
         
-        return sprintf($this->settings['itemFormat'], $class, $url, $subMenu);
+        return array(sprintf($this->settings['itemFormat'], $class, $url, $subMenu), $isActive);
     }
     
 }
