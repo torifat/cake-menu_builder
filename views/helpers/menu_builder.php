@@ -38,7 +38,8 @@ class MenuBuilderHelper extends AppHelper {
         'submenu' => null,
         'title' => null,
         'url' => null,
-        'alias' => null,
+        'alias' => array(),
+        'partialMatch' => false,
     );
     
 /**
@@ -116,9 +117,17 @@ class MenuBuilderHelper extends AppHelper {
         if($item['separator']) return '';
         
         $token = array('', false);
-        if($hasSubMenu=is_array($item['submenu'])) $token = $this->build('submenu', $item);
+        if($hasSubMenu = is_array($item['submenu'])) $token = $this->build('submenu', $item);
         $subMenu = $token[0];
-        $isActive = $token[1] || (!is_null($item['url']) && (Router::normalize($this->here) === Router::normalize($item['url'])));
+        
+        $check = false;
+        if($item['partialMatch']):
+            $check = !(strpos(Router::normalize($item['url']), Router::normalize($this->here))===FALSE);
+        else :
+            $check = Router::normalize($this->here) === Router::normalize($item['url']);
+        endif;
+        
+        $isActive = $token[1] || (!is_null($item['url']) && $check);
         
         $arrClass = array();
         if($pos===0) $arrClass[] = $this->settings['firstClass'];
