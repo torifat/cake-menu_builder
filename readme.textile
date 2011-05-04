@@ -1,34 +1,29 @@
-h1. [PLUGIN NAME] Plugin
+h1. MenuBuilder Plugin
 
-[ONE LINE DESCRIPTION OF PROJECT]
+A dynamic menu building helper for CakePHP
 
 h2. Background
 
-[A PARAGRAPH DESCRIBING WHY YOU BUILT THIS]
-
-[ANOTHER PARAGRAPH DESCRIBING YOUR IMPETUS FOR RELEASING THIS]
+This is a menu building helper with lot of customization options. You will find details in the Usage section of Wiki :).
 
 h2. Requirements
 
-* [PHP_VERSION REQUIREMENT]
-* [CAKEPHP_VERSION REQUIREMENT]
-* [REQUIRED PLUGINS]
-* [OTHER EXTERNAL DEPENDENCIES]
-* [SNARKY COMMENT HERE]
+* Built for PHP 5.* I'm not interested about PHP 4
+* CakePHP 1.3.×. Untested with the 1.2.x series, but should work fine
 
 h2. Installation
 
 _[Manual]_
 
-# Download this: http://github.com/[GITHUB_USERNAME]/[REPOSITORY_NAME]/zipball/master
+# Download this: http://github.com/torifat/cake-menu_builder/zipball/master
 # Unzip that download.
 # Copy the resulting folder to app/plugins
-# Rename the folder you just copied to @[PLUGIN_NAME]@
+# Rename the folder you just copied to @menu_builder@
 
 _[GIT Submodule]_
 
 In your app directory type:
-<pre><code>git submodule add git://github.com/[GITHUB_USERNAME]/[REPOSITORY_NAME].git plugins/[PLUGIN_NAME]
+<pre><code>git submodule add git://github.com/torifat/cake-menu_builder.git plugins/menu_builder
 git submodule init
 git submodule update
 </code></pre>
@@ -36,31 +31,11 @@ git submodule update
 _[GIT Clone]_
 
 In your plugin directory type
-<pre><code>git clone git://github.com/[GITHUB_USERNAME]/[REPOSITORY_NAME].git [PLUGIN_NAME]</code></pre>
-
-h2. Usage
-
-[EXAMPLE ON HOW TO SETUP YOUR PLUGIN]
-
-[PARAGRAPH EXPLAINING DIFFERENT WAYS TO CONFIGURE THE PLUGIN]
-
-h2. Options
-
-# [ONE OPTION] : [OPTION EXPLANATION]
-# [ANOTHER OPTION] : [OPTION EXPLANATION]
-# [YET ANOTHER OPTION]
-## [VALID PARAMETER]
-## [ANOTHER VALID PARAMETER]
-
-h2. Todo
-
-* [TODO ITEM]
-* [ANOTHER ITEM]
-* -[COMPLETED ITEM]-
+<pre><code>git clone git://github.com/torifat/cake-menu_builder.git menu_builder</code></pre>
 
 h2. License
 
-Copyright (c) [CURRENT_YEAR] [YOUR_NAME]
+Copyright (c) 2011 M. M. Rifat-Un-Nabi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
