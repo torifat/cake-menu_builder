@@ -4,12 +4,12 @@ A dynamic menu building helper for CakePHP
 
 h2. Background
 
-This is a menu building helper with lot of customization options. You will find details in the Usage section of Wiki :).
+This is a menu building helper with lot of customization options. You will find details in the "Usage":https://github.com/torifat/cake-menu_builder/wiki/Usage section of Wiki :).
 
 h2. Requirements
 
 * Built for PHP 5.* I'm not interested about PHP 4
-* CakePHP 1.3.×. Untested with the 1.2.x series, but should work fine
+* CakePHP 1.3.*. Untested with the 1.2.x series, but should work fine
 
 h2. Installation
 
