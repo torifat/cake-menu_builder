@@ -147,7 +147,7 @@ class MenuBuilderHelper extends AppHelper {
         
         $check = false;
         if($item['partialMatch']):
-            $check = !(strpos(Router::normalize($this->here), Router::normalize($item['url']))===FALSE);
+            $check = (strpos(Router::normalize($this->here), Router::normalize($item['url']))===0);
         else :
             $check = Router::normalize($this->here) === Router::normalize($item['url']);
         endif;
