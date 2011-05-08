@@ -73,7 +73,7 @@ class MenuBuilderHelper extends AppHelper {
         'evenOdd' => false, 
         'itemFormat' => '<li%s>%s%s</li>',
         'wrapperFormat' => '<ul%s>%s</ul>',
-        'emptyLinkFormat' => '<a href="#">%s</a>',
+        'noLinkFormat' => '<a href="#">%s</a>',
         'menuVar' => 'menu',
         'authVar' => 'user',
         'authModel' => 'User',
@@ -183,7 +183,7 @@ class MenuBuilderHelper extends AppHelper {
         endif;
         if(!empty($arrClass)) $class = ' class="'.implode(' ', $arrClass).'"';
         
-        if(is_null($item['url'])) $url = sprintf($this->settings['emptyLinkFormat'], $item['title']);
+        if(is_null($item['url'])) $url = sprintf($this->settings['noLinkFormat'], $item['title']);
         else $url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
         
         $pad = str_repeat("\t", $this->_depth);

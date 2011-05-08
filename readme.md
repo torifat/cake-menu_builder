@@ -23,8 +23,8 @@ This is a menu building helper with lot of customization options. Check out the 
 
 * Download this: http://github.com/torifat/cake-menu_builder/zipball/master
 * Unzip that download.
-* Copy the resulting folder to app/plugins
-* Rename the folder you just copied to @menu_builder@
+* Copy the resulting folder to `app/plugins`
+* Rename the folder you just copied to `menu_builder`
 
 ### GIT Submodule
 
@@ -37,6 +37,7 @@ In your app directory type:
 ###GIT Clone
 
 In your plugin directory type
+
     git clone git://github.com/torifat/cake-menu_builder.git menu_builder
 
 # Usage
@@ -87,7 +88,7 @@ To use this helper add the following to your AppController:
     }
     ?>
 
-Now to build your main-menu use the following code in the View:
+Now to build your `main-menu` use the following code in the View:
 
     <?php 
         echo $menuBuilder->build('main-menu'); 
@@ -100,7 +101,7 @@ You'll get the following output in the Home (/pages/home) page:
         <li><a title="About Us" href="/pages/about-us">About Us</a></li> 
     </ul> 
 
-And to build your left-menu use the following code in the View:
+And to build your `left-menu` use the following code in the View:
 
     <?php 
         echo $menuBuilder->build('left-menu'); 
@@ -155,16 +156,16 @@ if you do not provide any settings then the following settings will work.
 ### Settings Details
 
 **activeClass**
-CSS classname for the selected/current item and it's successors.
+CSS classname for the selected/current item and it's successors. *(default - `'active'`)*
 
 **firstClass**
-CSS classname for the first item of each level.
+CSS classname for the first item of each level. *(default - `'first-item'`)*
 
 **subMenuClass**
-CSS classname for an item containing sub menu.
+CSS classname for an item containing sub menu. *(default - `'has-sub-menu'`)*
 
 **evenOdd**
-If it is set to `true` then even/odd classname will be provided with each item.
+If it is set to `true` then even/odd classname will be provided with each item. *(default - `false`)*
     
     <ul id="main-menu"> 
         <li class="first-item odd"> 
@@ -176,13 +177,13 @@ If it is set to `true` then even/odd classname will be provided with each item.
     </ul>
 
 **itemFormat**
-if you want to use other tag than `li` for menu items
+if you want to use other tag than `li` for menu items *(default - `'<li%s>%s%s</li>'`)*
 
 **wrapperFormat**
-if you want to use other tag than `ul` for menu items container
+if you want to use other tag than `ul` for menu items container *(default - `'<ul%s>%s</ul>'`)*
 
 **noLinkFormat**
-Format for empty link item
+Format for empty link item *(default - `'<a href="#">%s</a>'`)*
 
 *Example Setting*
 
@@ -207,18 +208,18 @@ Format for empty link item
     </div>
 
 **menuVar**
-Name of the variable that contains all menus
+Name of the variable that contains all menus *(default - `'menu'`)*
 
 *Following settings will be used for permission based menu (see below)*
 
 **authVar**
-Name of the variable that contains the `User` data
+Name of the variable that contains the `User` data *(default - `'user'`)*
 
 **authModel**
-Name of the authentication model
+Name of the authentication model *(default - `'User'`)*
 
 **authField**
-Name of the field that contains the user's type/group/permission/level
+Name of the field that contains the user's type/group/permission/level *(default - `'group'`)*
 
 ## Permission Based Menu
 
