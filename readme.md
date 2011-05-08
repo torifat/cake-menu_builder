@@ -21,10 +21,10 @@ This is a menu building helper with lot of customization options. Check out the 
 
 ### Manual
 
-# Download this: http://github.com/torifat/cake-menu_builder/zipball/master
-# Unzip that download.
-# Copy the resulting folder to app/plugins
-# Rename the folder you just copied to @menu_builder@
+* Download this: http://github.com/torifat/cake-menu_builder/zipball/master
+* Unzip that download.
+* Copy the resulting folder to app/plugins
+* Rename the folder you just copied to @menu_builder@
 
 ### GIT Submodule
 
@@ -221,6 +221,8 @@ Name of the authentication model
 Name of the field that contains the user's type/group/permission/level
 
 ## Permission Based Menu
+
+Coming Soon :)
 
 # License
 
