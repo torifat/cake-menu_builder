@@ -6,7 +6,7 @@ A dynamic menu building helper for CakePHP
 
 This is a menu building helper with lot of customization options. Check out the [[Usage]] section.
 
-## Requirements
+## Features
 
 * Generate menu based on current user type/group/permission/level
 * Provide various useful CSS class
