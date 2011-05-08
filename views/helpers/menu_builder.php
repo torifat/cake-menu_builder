@@ -26,7 +26,7 @@ class MenuBuilderHelper extends AppHelper {
  * @var array
  * @access protected
  */
-    protected $menu = array();
+    protected $_menu = array();
     
 /**
  * Current user group
@@ -34,7 +34,15 @@ class MenuBuilderHelper extends AppHelper {
  * @var String
  * @access protected
  */
-    protected $group = null;
+    protected $_group = null;
+    
+/**
+ * Current depth of menu
+ *
+ * @var Integer
+ * @access protected
+ */
+    protected $_depth = 0;
     
 /**
  * defaults property
@@ -42,7 +50,7 @@ class MenuBuilderHelper extends AppHelper {
  * @var array
  * @access public
  */
-    protected $defaults = array(
+    protected $_defaults = array(
         'separator' => false, 
         'submenu' => null,
         'title' => null,
@@ -63,8 +71,8 @@ class MenuBuilderHelper extends AppHelper {
         'firstClass' => 'first-item', 
         'subMenuClass' => 'has-sub-menu', 
         'evenOdd' => false, 
-        'itemFormat' => '<li%s>%s%s</li>',
-        'wrapperFormat' => '<ul%s>%s</ul>',
+        'itemFormat' => "<li%s>%s%s</li>\n",
+        'wrapperFormat' => "<ul%s>\n%s</ul>\n",
         'emptyLinkFormat' => '<a href="#">%s</a>',
         'menuVar' => 'menu',
         'authVar' => 'user',
@@ -81,12 +89,12 @@ class MenuBuilderHelper extends AppHelper {
         $this->settings = am($this->settings, $config);
         $view =& ClassRegistry::getObject('view');
         if(!isset($view->viewVars[$this->settings['menuVar']])) return;
-        $this->menu = $view->viewVars[$this->settings['menuVar']];
+        $this->_menu = $view->viewVars[$this->settings['menuVar']];
         
         if(isset($view->viewVars[$this->settings['authVar']])):
             $tmp = $view->viewVars[$this->settings['authVar']];
             if(isset($tmp[$this->settings['authModel']][$this->settings['authField']]))
-                $this->group = $tmp[$this->settings['authModel']][$this->settings['authField']];
+                $this->_group = $tmp[$this->settings['authModel']][$this->settings['authField']];
         endif;
     }
     
@@ -99,15 +107,17 @@ class MenuBuilderHelper extends AppHelper {
  * @access public
  */
     public function build($id, &$data=null) {
-        if(is_null($data)) $data =& $this->menu;
+        if(is_null($data)) $data =& $this->_menu;
         if(!isset($data[$id])) return;
         
         $out = '';
         $token = array();
         $status = false;
         if(is_array($data[$id])) :
-            foreach($data[$id] as $pos => $item) :
+            foreach($data[$id] as $pos => $item):
+                $this->_depth++;
                 $token = $this->_buildItem($item, $pos);
+                $this->_depth--;
                 $out .= $token[0];
                 $status = $status || $token[1];
             endforeach;
@@ -116,7 +126,8 @@ class MenuBuilderHelper extends AppHelper {
         $class = '';
         if($id!='submenu') $class = ' id="'.$id.'"';
         
-        $out = sprintf($this->settings['wrapperFormat'], $class, $out);
+        $pad = str_repeat("\t", $this->_depth);
+        $out = sprintf('%s'.$this->settings['wrapperFormat'], $pad, $class, $out.$pad);
         if($id=='submenu') return array($out, $status);
         return $out;
     }
@@ -132,17 +143,21 @@ class MenuBuilderHelper extends AppHelper {
     protected function _buildItem(&$item, $pos=-1) {
         
         $ret = array('', false);
-        $item = am($this->defaults, $item);
+        $item = am($this->_defaults, $item);
         
         if($item['separator']) return array($item['separator'], false);
         if(is_null($item['title'])) return $ret;
         
         if(!empty($item['permissions'])):
-            if(!in_array($this->group, (array)$item['permissions'])) return $ret;
+            if(!in_array($this->_group, (array)$item['permissions'])) return $ret;
         endif;
         
         $token = array('', false);
-        if($hasSubMenu = is_array($item['submenu'])) $token = $this->build('submenu', $item);
+        if($hasSubMenu = is_array($item['submenu'])):
+            $this->_depth++;
+            $token = $this->build('submenu', $item);
+            $this->_depth--;
+        endif;
         $subMenu = $token[0];
         
         $check = false;
@@ -171,7 +186,17 @@ class MenuBuilderHelper extends AppHelper {
         if(is_null($item['url'])) $url = sprintf($this->settings['emptyLinkFormat'], $item['title']);
         else $url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
         
-        return array(sprintf($this->settings['itemFormat'], $class, $url, $subMenu), $isActive);
+        $pad = str_repeat("\t", $this->_depth);
+        $urlPad = str_repeat("\t", $this->_depth+1);
+        $url = "\n".$urlPad.$url;
+        
+        if($subMenu!==''):
+            $subMenu = "\n".$token[0].$pad;
+        else:
+            $url .= "\n".$pad;
+        endif;
+        
+        return array(sprintf('%s'.$this->settings['itemFormat'], $pad, $class, $url, $subMenu), $isActive);
     }
     
 }
