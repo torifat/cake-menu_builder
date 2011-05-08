@@ -4,7 +4,7 @@ A dynamic menu building helper for CakePHP
 
 ## Background
 
-This is a menu building helper with lot of customization options. Check out the [[Usage]] section.
+This is a menu building helper with lot of customization options. Check out the **Usage** section.
 
 ## Features
 
@@ -46,9 +46,11 @@ In your plugin directory type
 To use this helper add the following to your AppController:
 
     <?php
-    var $helpers = array('MenuBuilder.MenuBuilder');
+    ...
+    var $helpers = array(..., 'MenuBuilder.MenuBuilder');
     
     function beforeFilter() {
+        ...
         // Define your menu
         $menu = array(
             'main-menu' => array(
@@ -85,6 +87,7 @@ To use this helper add the following to your AppController:
         
         // For default settings name must be menu
         $this->set(compact('menu'));
+        ...
     }
     ?>
 
@@ -131,7 +134,9 @@ You'll get the following output in your 'Item 4' (/items/view/4) page:
 You can provide advance options in the array like the following:
 
     <?php
+    ...
     var $helpers = array(
+        ...
         'MenuBuilder.MenuBuilder' => array(/* array of settings */)
     );
     ?>
@@ -193,7 +198,7 @@ Format for empty link item *(default - `'<a href="#">%s</a>'`)*
         'noLinkFormat' => '<div>%s</div>',
     ),
 
-*Example Output*
+*Example Output (an extra item added to explain `noLinkFormat`)*
 
     <div id="main-menu"> 
         <div class="first-item"> 
@@ -223,7 +228,85 @@ Name of the field that contains the user's type/group/permission/level *(default
 
 ## Permission Based Menu
 
-Coming Soon :)
+Suppose you have a `users` table like the following one:
+
+    CREATE TABLE `users` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `email` varchar(255) NOT NULL,
+        `password` char(40) NOT NULL,
+        `group` enum('user','manager','admin') NOT NULL DEFAULT 'user',
+        `name` varchar(255) NOT NULL,
+        PRIMARY KEY (`id`),
+        UNIQUE KEY (`email`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+Now suppose you are using the CakePHP auth component for authentication so add the following to your AppController:
+
+    <?php
+    ...
+    function beforeFilter() {
+        ...
+        $user = $this->Auth->user();
+        $this->set(compact('user'));
+    }
+    ?>
+
+But, If you are using [Authsome](https://github.com/felixge/cakephp-authsome) component for authentication then add the following to your AppController:
+
+    <?php
+    ...
+    function beforeFilter() {
+        ...
+        $user = Authsome::get();
+        $this->set(compact('user'));
+    }
+    ?>
+
+Now we have to define permissions in our menu like this:
+
+    <?php
+    ...
+    function beforeFilter() {
+        ...
+        // Define your menu
+        $menu = array(
+            'main-menu' => array(
+                // Anybody can see this
+                array(
+                    'title' => 'Home',
+                    'url' => array('controller' => 'pages', 'action' => 'home'),
+                ),
+                // Users and Admins can see this, Guests and Managers can't
+                array(
+                    'title' => 'About Us',
+                    'url' => array('controller' => 'pages', 'action' => 'about-us'),
+                    'permissions' => array('user','admin'),
+                ),
+                // Only Guests can see this
+                array(
+                    'title' => 'Login',
+                    'url' => array('controller' => 'users', 'action' => 'login'),
+                    'permissions' => array(''),
+                ),
+            ),
+            ...
+        );        
+        // For default settings name must be menu
+        $this->set(compact('menu'));
+        ...
+    }
+    ?>
+
+**You're Done!**
+
+### Other Menu Options
+**permissions**
+Array of type/group/permission/level whose can view that item *(default - `array()`)*
+
+**partialMatch**
+Normally `url` matching are strict. Suppose you are in `/items/details` and your menu contains an entry for `/item` then by default it'll not set active. But if you set `partialMatch` to `true` then it'll set active . *(default - `false`)*
+
+**More to come :)**
 
 # License
 
