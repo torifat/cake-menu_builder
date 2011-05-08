@@ -71,8 +71,8 @@ class MenuBuilderHelper extends AppHelper {
         'firstClass' => 'first-item', 
         'subMenuClass' => 'has-sub-menu', 
         'evenOdd' => false, 
-        'itemFormat' => "<li%s>%s%s</li>\n",
-        'wrapperFormat' => "<ul%s>\n%s</ul>\n",
+        'itemFormat' => '<li%s>%s%s</li>',
+        'wrapperFormat' => '<ul%s>%s</ul>',
         'emptyLinkFormat' => '<a href="#">%s</a>',
         'menuVar' => 'menu',
         'authVar' => 'user',
@@ -127,7 +127,7 @@ class MenuBuilderHelper extends AppHelper {
         if($id!='submenu') $class = ' id="'.$id.'"';
         
         $pad = str_repeat("\t", $this->_depth);
-        $out = sprintf('%s'.$this->settings['wrapperFormat'], $pad, $class, $out.$pad);
+        $out = sprintf('%s'.$this->settings['wrapperFormat']."\n", $pad, $class, "\n".$out.$pad);
         if($id=='submenu') return array($out, $status);
         return $out;
     }
@@ -196,7 +196,7 @@ class MenuBuilderHelper extends AppHelper {
             $url .= "\n".$pad;
         endif;
         
-        return array(sprintf('%s'.$this->settings['itemFormat'], $pad, $class, $url, $subMenu), $isActive);
+        return array(sprintf('%s'.$this->settings['itemFormat']."\n", $pad, $class, $url, $subMenu), $isActive);
     }
     
 }
