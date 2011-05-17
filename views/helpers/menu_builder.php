@@ -167,13 +167,15 @@ class MenuBuilderHelper extends AppHelper {
         $children = $token[0];
         
         $check = false;
-        if($item['partialMatch']):
-            $check = (strpos(Router::normalize($this->here), Router::normalize($item['url']))===0);
-        else :
-            $check = Router::normalize($this->here) === Router::normalize($item['url']);
+        if(isset($item['url'])):
+            if($item['partialMatch']):
+                $check = (strpos(Router::normalize($this->here), Router::normalize($item['url']))===0);
+            else :
+                $check = Router::normalize($this->here) === Router::normalize($item['url']);
+            endif;
         endif;
         
-        $isActive = $token[1] || (!is_null($item['url']) && $check);
+        $isActive = ($token[1] || $check);
         
         $arrClass = array();
         if($pos===0) $arrClass[] = $this->settings['firstClass'];
@@ -197,13 +199,11 @@ class MenuBuilderHelper extends AppHelper {
         else $url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
         
         $pad = str_repeat("\t", $this->_depth);
-        $urlPad = str_repeat("\t", $this->_depth+1);
-        $url = "\n".$urlPad.$url;
-        
-        if($children!==''):
+        if($hasChildren):
+            $urlPad = str_repeat("\t", $this->_depth+1);
+            $url = "\n".$urlPad.$url;
             $children = "\n".$token[0].$pad;
         else:
-            $url .= "\n".$pad;
         endif;
         
         return array(sprintf('%s'.$this->settings['itemFormat']."\n", $pad, $class, $url, $children), $isActive);
