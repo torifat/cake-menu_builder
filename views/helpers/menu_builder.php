@@ -52,12 +52,14 @@ class MenuBuilderHelper extends AppHelper {
  */
     protected $_defaults = array(
         'separator' => false, 
-        'submenu' => null,
+        'children' => null,
         'title' => null,
         'url' => null,
         'alias' => array(),
         'partialMatch' => false,
         'permissions' => array(),
+        'id' => null,
+        'class' => null,
     );
     
 /**
@@ -69,7 +71,7 @@ class MenuBuilderHelper extends AppHelper {
     public $settings = array(
         'activeClass' => 'active', 
         'firstClass' => 'first-item', 
-        'subMenuClass' => 'has-sub-menu', 
+        'childrenClass' => 'has-children', 
         'evenOdd' => false, 
         'itemFormat' => '<li%s>%s%s</li>',
         'wrapperFormat' => '<ul%s>%s</ul>',
@@ -83,7 +85,7 @@ class MenuBuilderHelper extends AppHelper {
 /**
  * Constructor.
  *
- * @access private
+ * @access public
  */
     function __construct($config=array()) {
         $this->settings = am($this->settings, $config);
@@ -101,20 +103,23 @@ class MenuBuilderHelper extends AppHelper {
 /**
  * Returns the whole menu HTML.
  *
- * @param string Array key.
+ * @param string optional Array key.
+ * @param array optional Aditional Options.
  * @param array optional Data which has the key.
  * @return string HTML menu
  * @access public
  */
-    public function build($id, &$data=null) {
+    public function build($id=null, $options=array(), &$data=null) {
         if(is_null($data)) $data =& $this->_menu;
-        if(!isset($data[$id])) return;
+        
+        if(!isset($data[$id])) $parent = &$data;
+        else $parent = &$data[$id];
         
         $out = '';
         $token = array();
         $status = false;
-        if(is_array($data[$id])) :
-            foreach($data[$id] as $pos => $item):
+        if(is_array($parent)) :
+            foreach($parent as $pos => $item):
                 $this->_depth++;
                 $token = $this->_buildItem($item, $pos);
                 $this->_depth--;
@@ -124,11 +129,12 @@ class MenuBuilderHelper extends AppHelper {
         endif;
         
         $class = '';
-        if($id!='submenu') $class = ' id="'.$id.'"';
+        if(isset($id) && $id!='children') $class = ' id="'.$id.'"';
+        if(isset($options['class'])) $class .= ' class="'.$options['class'].'"';
         
         $pad = str_repeat("\t", $this->_depth);
         $out = sprintf('%s'.$this->settings['wrapperFormat']."\n", $pad, $class, "\n".$out.$pad);
-        if($id=='submenu') return array($out, $status);
+        if($id=='children') return array($out, $status);
         return $out;
     }
     
@@ -153,12 +159,12 @@ class MenuBuilderHelper extends AppHelper {
         endif;
         
         $token = array('', false);
-        if($hasSubMenu = is_array($item['submenu'])):
+        if($hasChildren = is_array($item['children'])):
             $this->_depth++;
-            $token = $this->build('submenu', $item);
+            $token = $this->build('children', array(), $item);
             $this->_depth--;
         endif;
-        $subMenu = $token[0];
+        $children = $token[0];
         
         $check = false;
         if($item['partialMatch']):
@@ -172,7 +178,7 @@ class MenuBuilderHelper extends AppHelper {
         $arrClass = array();
         if($pos===0) $arrClass[] = $this->settings['firstClass'];
         if($isActive) $arrClass[] = $this->settings['activeClass'];
-        if($hasSubMenu) $arrClass[] = $this->settings['subMenuClass'];
+        if($hasChildren) $arrClass[] = $this->settings['childrenClass'];
         if($this->settings['evenOdd']) $arrClass[] = (($pos&1)?'even':'odd');
         
         $class = '';
@@ -183,6 +189,10 @@ class MenuBuilderHelper extends AppHelper {
         endif;
         if(!empty($arrClass)) $class = ' class="'.implode(' ', $arrClass).'"';
         
+        if(isset($item['id'])):
+            $class = ' id="'.$item['id'].'"'.$class;
+        endif;
+        
         if(is_null($item['url'])) $url = sprintf($this->settings['noLinkFormat'], $item['title']);
         else $url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
         
@@ -190,13 +200,13 @@ class MenuBuilderHelper extends AppHelper {
         $urlPad = str_repeat("\t", $this->_depth+1);
         $url = "\n".$urlPad.$url;
         
-        if($subMenu!==''):
-            $subMenu = "\n".$token[0].$pad;
+        if($children!==''):
+            $children = "\n".$token[0].$pad;
         else:
             $url .= "\n".$pad;
         endif;
         
-        return array(sprintf('%s'.$this->settings['itemFormat']."\n", $pad, $class, $url, $subMenu), $isActive);
+        return array(sprintf('%s'.$this->settings['itemFormat']."\n", $pad, $class, $url, $children), $isActive);
     }
     
 }

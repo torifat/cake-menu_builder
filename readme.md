@@ -6,15 +6,18 @@ A dynamic menu building helper for CakePHP
 
 This is a menu building helper with lot of customization options. Check out the **Usage** section.
 
+Now it supports menus built with [ACL Menu Component](http://mark-story.com/posts/view/acl-menu-component) by [Mark Story](http://mark-story.com/)
+
 ## Features
 
 * Generate menu based on current user type/group/permission/level
 * Provide various useful CSS class
 * Multi-level menu support
+* Supports [ACL Menu Component](http://mark-story.com/posts/view/acl-menu-component) by [Mark Story](http://mark-story.com/)
 
 ## Requirements
 
-* Built for PHP 5.* I'm not interested about PHP 4
+* Built for PHP 5.* I'm not interested about PHP 4 but you can modify it easily :)
 * CakePHP 1.3.*. Untested with the 1.2.x series, but should work fine
 
 ## Installation
@@ -60,14 +63,14 @@ To use this helper add the following to your AppController:
                 ),
                 array(
                     'title' => 'About Us',
-                    'url' => array('controller' => 'pages', 'action' => 'about-us'),
+                    'url' => '/pages/about-us',
                 ),
             ),
             'left-menu' => array(
                 array(
                     'title' => 'Item 1',
                     'url' => array('controller' => 'items', 'action' => 'view', 1),
-                    'submenu' => array(
+                    'children' => array(
                         array(
                             'title' => 'Item 3',
                             'url' => array('controller' => 'items', 'action' => 'view', 3),
@@ -94,7 +97,7 @@ To use this helper add the following to your AppController:
 Now to build your `main-menu` use the following code in the View:
 
     <?php 
-        echo $menuBuilder->build('main-menu'); 
+        echo $menuBuilder->build('main-menu');
     ?>
 
 You'll get the following output in the Home (/pages/home) page:
@@ -113,7 +116,7 @@ And to build your `left-menu` use the following code in the View:
 You'll get the following output in your 'Item 4' (/items/view/4) page:
 
     <ul id="left-menu"> 
-        <li class="first-item active has-sub-menu"> 
+        <li class="first-item active has-children"> 
             <a title="Item 1" href="/items/view/1">Item 1</a> 
             <ul> 
                 <li class="first-item"> 
@@ -128,6 +131,14 @@ You'll get the following output in your 'Item 4' (/items/view/4) page:
             <a title="Item 2" href="/items/view/2">Item 2</a> 
         </li> 
     </ul>
+    
+You can pass optional parameter in `build` function like -
+
+    <?php
+        echo $menuBuilder->build('main-menu', array('class' => array('fun', 'red'));
+        // OR
+        echo $menuBuilder->build('main-menu', array('class' => 'fun green');
+    ?>
 
 ## Advance Setup
 
@@ -147,7 +158,7 @@ if you do not provide any settings then the following settings will work.
     $settings = array(
         'activeClass' => 'active', 
         'firstClass' => 'first-item', 
-        'subMenuClass' => 'has-sub-menu', 
+        'childrenClass' => 'has-children', 
         'evenOdd' => false, 
         'itemFormat' => '<li%s>%s%s</li>',
         'wrapperFormat' => '<ul%s>%s</ul>',
@@ -166,8 +177,8 @@ CSS classname for the selected/current item and it's successors. *(default - `'a
 **firstClass**
 CSS classname for the first item of each level. *(default - `'first-item'`)*
 
-**subMenuClass**
-CSS classname for an item containing sub menu. *(default - `'has-sub-menu'`)*
+**childrenClass**
+CSS classname for an item containing sub menu. *(default - `'has-children'`)*
 
 **evenOdd**
 If it is set to `true` then even/odd classname will be provided with each item. *(default - `false`)*
@@ -202,10 +213,10 @@ Format for empty link item *(default - `'<a href="#">%s</a>'`)*
 
     <div id="main-menu"> 
         <div class="first-item"> 
-            <a title="Home" href="/adn/pages/home">Home</a> 
+            <a title="Home" href="/pages/home">Home</a> 
         </div> 
         <div> 
-            <a title="About Us" href="/adn/pages/about-us">About Us</a> 
+            <a title="About Us" href="/pages/about-us">About Us</a> 
         </div>
         <div> 
             Empty
@@ -306,7 +317,73 @@ Array of type/group/permission/level whose can view that item *(default - `array
 **partialMatch**
 Normally `url` matching are strict. Suppose you are in `/items/details` and your menu contains an entry for `/item` then by default it'll not set active. But if you set `partialMatch` to `true` then it'll set active . *(default - `false`)*
 
+**id**
+Provide CSS id to the item *(default - `null`)*
+
+**class**
+Provide CSS class to the item *(default - `null`)*
+
+**separator**
+If you want to define some separator in your menu, below is a nice example of what you can do with it. *(default - `false`)*
+
+*Example Setting*
+
+    'MenuBuilder.MenuBuilder' => array(
+        'itemFormat' => '<dd%s>%s%s</dd>',
+        'wrapperFormat' => '<dl%s>%s</dl>',
+        'noLinkFormat' => '<dd>%s</dd>',
+    ),
+
+*Example Menu*
+
+    <?php
+    ...
+    var $helpers = array(..., 'MenuBuilder.MenuBuilder');
+    
+    function beforeFilter() {
+        ...
+        // Define your menu
+        $menu = array(
+            'main-menu' => array(
+                array(
+                    'separator' => '<dt>Main Menu</dt>',
+                ),
+                array(
+                    'title' => 'Home',
+                    'url' => array('controller' => 'pages', 'action' => 'home'),
+                ),
+                array(
+                    'title' => 'About Us',
+                    'url' => '/pages/about-us',
+                ),
+            )
+        );
+        
+        // For default settings name must be menu
+        $this->set(compact('menu'));
+        ...
+    }
+    ?>
+
+
+*Example Output*
+
+    <dl id="main-menu"> 
+        <dt>Main Menu</dt> 
+        <dd class="first-item"> 
+            <a title="Home" href="/pages/home">Home</a> 
+        </dd> 
+        <dd> 
+            <a title="About Us" href="/pages/about-us">About Us</a> 
+        </dd> 
+    </dl>
+    
 **More to come :)**
+
+## ToDo
+
+*Add Test Cases*
+
 
 # License
 
