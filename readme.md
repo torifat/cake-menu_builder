@@ -1,4 +1,4 @@
-# MenuBuilder Plugin
+# MenuBuilder Helper
 
 A dynamic menu building helper for CakePHP
 
@@ -10,10 +10,11 @@ Now it supports menus built with [ACL Menu Component](http://mark-story.com/post
 
 ## Features
 
-* Generate menu based on current user type/group/permission/level
+* Generate menu based on current user type/group/permission/level (Can be used with Auth, Authsome, etc Components)
 * Provide various useful CSS class
 * Multi-level menu support
 * Supports [ACL Menu Component](http://mark-story.com/posts/view/acl-menu-component) by [Mark Story](http://mark-story.com/)
+* CakePHP Unit Test (100% Code coverage)
 
 ## Requirements
 
@@ -382,7 +383,7 @@ If you want to define some separator in your menu, below is a nice example of wh
 
 ## ToDo
 
-*Add Test Cases*
+*Add More Test Cases*
 
 
 # License
