@@ -21,8 +21,29 @@ class MenuBuilderHelperTest extends CakeTestCase {
             ),
         );
         
+        $guest = array(
+            'User' => array(
+                'group' => '',
+            )
+        );
+        
+        $user = array(
+            'User' => array(
+                'group' => 'user',
+            )
+        );
+        
+        $admin = array(
+            'User' => array(
+                'group' => 'admin',
+            )
+        );
+        
         $this->Conroller = new Controller();
-        $this->Conroller->set('menu', $menu);
+        $this->Conroller->set(compact('menu'));
+        $this->Conroller->set(compact('guest'));
+        $this->Conroller->set(compact('user'));
+        $this->Conroller->set(compact('admin'));
         $this->View = new View($this->Conroller);
         $this->MenuBuilder = new MenuBuilderHelper();
     }
@@ -810,6 +831,110 @@ class MenuBuilderHelperTest extends CakeTestCase {
         );
         $this->assertTags($result, $expected, true);        
         
+    }    
+    
+/**
+ * testPermissions Test URL permission
+ *
+ * @access public
+ * @return void
+ */
+    function testPermissions() {
+        
+        // With Multi Level Sub Menu
+        $menu = array(
+            array(
+                'title' => 'Item 1',
+                'url' => '/item-1',
+                'children' => array(
+                    array(
+                        'title' => 'Item 1.1',
+                        'url' => '/item-1.1',
+                        'permissions' => array('user'),
+                    ),
+                    array(
+                        'title' => 'Item 1.2',
+                        'url' => '/item-1.2',
+                        'permissions' => array('user', 'admin'),
+                        'children' => array(
+                            array(
+                                'title' => 'Item 1.2.1',
+                                'url' => '/item-1.2.1',
+                            ),
+                            array(
+                                'title' => 'Item 1.2.2',
+                                'url' => '/item-1.2.2',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
+                'title' => 'Item 2',
+                'url' => '/item-2',
+                'children' => array(
+                    array(
+                        'title' => 'Item 2.1',
+                        'url' => '/item-2.1',
+                        'permissions' => array(''),
+                    ),
+                    array(
+                        'title' => 'Item 2.2',
+                        'url' => '/item-2.2',
+                        'permissions' => array('admin'),
+                    ),
+                ),
+            ),
+        );
+        
+        $result = $this->MenuBuilder->build(null, array(), $menu);
+        $expected = array(
+            '<ul',
+                array('li' => array('class' => 'first-item has-children')), 
+                    array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+                    '<ul',
+                        array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
+                        array('li' => array('class' => 'has-children')), 
+                            array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a', 
+                            '<ul',
+                                array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')),'Item 1.2.1', '</a', '</li',
+                                '<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')),'Item 1.2.2', '</a', '</li',
+                            '</ul',
+                        '</li',
+                    '</ul',
+                '</li',
+                '<li',
+                    array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', 
+                '</li',
+            '</ul'
+        );
+        $this->assertTags($result, $expected, true);        
+        
+        $this->MenuBuilder = new MenuBuilderHelper(array('authVar' => 'admin'));
+        $result = $this->MenuBuilder->build(null, array(), $menu);
+        $expected = array(
+            '<ul',
+                array('li' => array('class' => 'first-item has-children')), 
+                    array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+                    '<ul',
+                        array('li' => array('class' => 'first-item has-children')), 
+                            array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a', 
+                            '<ul',
+                                array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')),'Item 1.2.1', '</a', '</li',
+                                '<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')),'Item 1.2.2', '</a', '</li',
+                            '</ul',
+                        '</li',
+                    '</ul',
+                '</li',
+                array('li' => array('class' => 'has-children')), 
+                    array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', 
+                    '<ul',
+                        array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+                    '</ul',
+                '</li',
+            '</ul'
+        );
+        $this->assertTags($result, $expected, true);        
     }
     
 }

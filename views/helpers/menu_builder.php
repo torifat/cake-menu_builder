@@ -112,22 +112,28 @@ class MenuBuilderHelper extends AppHelper {
     public function build($id=null, $options=array(), &$data=null) {
         if(is_null($data)) $data =& $this->_menu;
         
-        if(!isset($data[$id])) $parent = &$data;
-        else $parent = &$data[$id];
+        if(!isset($data[$id])):
+            $parent = &$data;
+        else:
+            $parent = &$data[$id];
+        endif;
         
         $out = '';
         $token = array();
         $status = false;
+        $offset = 0;
         if(is_array($parent)) :
             foreach($parent as $pos => $item):
                 $this->_depth++;
-                $token = $this->_buildItem($item, $pos);
+                $token = $this->_buildItem($item, $pos-$offset);
                 $this->_depth--;
                 $out .= $token[0];
+                if($token[0]==='') $offset++;
                 $status = $status || $token[1];
             endforeach;
         endif;
         
+        if($out==='') return array('', array());
         $class = '';
         if(isset($id) && $id!='children') $class = ' id="'.$id.'"';
         if(isset($options['class'])) $class .= ' class="'.$options['class'].'"';
@@ -165,6 +171,9 @@ class MenuBuilderHelper extends AppHelper {
             $this->_depth--;
         endif;
         $children = $token[0];
+        
+        // For Permissions empty child
+        if($children==='') $hasChildren = false;
         
         $check = false;
         if(isset($item['url'])):
