@@ -71,7 +71,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
     }
 
 /**
@@ -193,7 +193,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
         
     }
 
@@ -324,7 +324,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
         
     }
 
@@ -459,7 +459,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
         
     }
 
@@ -596,7 +596,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
         
     }
 
@@ -680,7 +680,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
         
     }
     
@@ -829,7 +829,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
         
     }    
     
@@ -908,7 +908,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
         
         $this->MenuBuilder = new MenuBuilderHelper(array('authVar' => 'admin'));
         $result = $this->MenuBuilder->build(null, array(), $menu);
@@ -934,7 +934,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
+        
         $this->MenuBuilder = new MenuBuilderHelper(array('authVar' => 'guest'));
         $result = $this->MenuBuilder->build(null, array(), $menu);
         $expected = array(
@@ -950,7 +951,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
                 '</li',
             '</ul'
         );
-        $this->assertTags($result, $expected, true);        
+        $this->assertTags($result, $expected, true);
         
     }
     
