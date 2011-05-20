@@ -109,7 +109,7 @@ class MenuBuilderHelper extends AppHelper {
  * @return string HTML menu
  * @access public
  */
-    public function build($id=null, $options=array(), &$data=null) {
+    public function build($id=null, $options=array(), &$data=null, &$isActive=false) {
         if(is_null($data)) $data =& $this->_menu;
         
         if(!isset($data[$id])):
@@ -119,29 +119,26 @@ class MenuBuilderHelper extends AppHelper {
         endif;
         
         $out = '';
-        $token = array();
-        $status = false;
         $offset = 0;
+        $nowIsActive = false;
         if(is_array($parent)) :
             foreach($parent as $pos => $item):
                 $this->_depth++;
-                $token = $this->_buildItem($item, $pos-$offset);
+                $ret = $this->_buildItem($item, $pos-$offset, $nowIsActive);
+                if($ret==='') $offset++;
+                $out .= $ret;
                 $this->_depth--;
-                $out .= $token[0];
-                if($token[0]==='') $offset++;
-                $status = $status || $token[1];
+                $isActive = $isActive || $nowIsActive;
             endforeach;
         endif;
         
-        if($out==='') return array('', array());
+        if($out==='') return '';
         $class = '';
         if(isset($id) && $id!='children') $class = ' id="'.$id.'"';
         if(isset($options['class'])) $class .= ' class="'.$options['class'].'"';
         
         $pad = str_repeat("\t", $this->_depth);
-        $out = sprintf('%s'.$this->settings['wrapperFormat']."\n", $pad, $class, "\n".$out.$pad);
-        if($id=='children') return array($out, $status);
-        return $out;
+        return sprintf('%s'.$this->settings['wrapperFormat']."\n", $pad, $class, "\n".$out.$pad);
     }
     
 /**
@@ -152,25 +149,24 @@ class MenuBuilderHelper extends AppHelper {
  * @return string HTML menu item
  * @access protected
  */
-    protected function _buildItem(&$item, $pos=-1) {
+    protected function _buildItem(&$item, $pos=-1, &$isActive=false) {
         
-        $ret = array('', false);
         $item = am($this->_defaults, $item);
         
-        if($item['separator']) return array($item['separator'], false);
-        if(is_null($item['title'])) return $ret;
+        if($item['separator']) return $item['separator'];
+        if(is_null($item['title'])) return '';
         
         if(!empty($item['permissions'])):
-            if(!in_array($this->_group, (array)$item['permissions'])) return $ret;
+            if(!in_array($this->_group, (array)$item['permissions'])) return '';
         endif;
         
-        $token = array('', false);
+        $children = '';
+        $nowIsActive = false;
         if($hasChildren = is_array($item['children'])):
             $this->_depth++;
-            $token = $this->build('children', array(), $item);
+            $children = $this->build('children', array(), $item, $nowIsActive);
             $this->_depth--;
         endif;
-        $children = $token[0];
         
         // For Permissions empty child
         if($children==='') $hasChildren = false;
@@ -184,7 +180,7 @@ class MenuBuilderHelper extends AppHelper {
             endif;
         endif;
         
-        $isActive = ($token[1] || $check);
+        $isActive = ($nowIsActive || $check);
         
         $arrClass = array();
         if($pos===0) $arrClass[] = $this->settings['firstClass'];
@@ -211,11 +207,11 @@ class MenuBuilderHelper extends AppHelper {
         if($hasChildren):
             $urlPad = str_repeat("\t", $this->_depth+1);
             $url = "\n".$urlPad.$url;
-            $children = "\n".$token[0].$pad;
+            $children = "\n".$children.$pad;
         else:
         endif;
         
-        return array(sprintf('%s'.$this->settings['itemFormat']."\n", $pad, $class, $url, $children), $isActive);
+        return sprintf('%s'.$this->settings['itemFormat']."\n", $pad, $class, $url, $children);
     }
     
 }
