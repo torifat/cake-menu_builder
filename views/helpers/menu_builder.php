@@ -112,6 +112,10 @@ class MenuBuilderHelper extends AppHelper {
     public function build($id=null, $options=array(), &$data=null, &$isActive=false) {
         if(is_null($data)) $data =& $this->_menu;
         
+        if(!empty($options)):
+            $this->settings = am($this->settings, $options);
+        endif;
+        
         if(!isset($data[$id])):
             $parent = &$data;
         else:
