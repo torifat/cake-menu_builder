@@ -19,7 +19,7 @@ Now it supports menus built with [ACL Menu Component](http://mark-story.com/post
 ## Requirements
 
 * Built for PHP 5.* I'm not interested about PHP 4 but you can modify it easily :)
-* CakePHP 1.3.*. Untested with the 1.2.x series, but should work fine
+* CakePHP 2.0.0
 
 ## Installation
 
@@ -98,7 +98,7 @@ To use this helper add the following to your AppController:
 Now to build your `main-menu` use the following code in the View:
 
     <?php 
-        echo $menuBuilder->build('main-menu');
+        echo $this->MenuBuilder->build('main-menu');
     ?>
 
 You'll get the following output in the Home (/pages/home) page:
@@ -111,7 +111,7 @@ You'll get the following output in the Home (/pages/home) page:
 And to build your `left-menu` use the following code in the View:
 
     <?php 
-        echo $menuBuilder->build('left-menu'); 
+        echo $this->MenuBuilder->build('left-menu'); 
     ?>
 
 You'll get the following output in your 'Item 4' (/items/view/4) page:
@@ -136,9 +136,9 @@ You'll get the following output in your 'Item 4' (/items/view/4) page:
 You can pass optional parameter in `build` function like -
 
     <?php
-        echo $menuBuilder->build('main-menu', array('class' => array('fun', 'red'));
+        echo $this->MenuBuilder->build('main-menu', array('class' => array('fun', 'red'));
         // OR
-        echo $menuBuilder->build('main-menu', array('class' => 'fun green');
+        echo $this->MenuBuilder->build('main-menu', array('class' => 'fun green');
     ?>
 
 ## Advance Setup
