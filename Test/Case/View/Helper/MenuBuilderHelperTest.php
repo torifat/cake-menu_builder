@@ -1,6 +1,7 @@
 <?php
-App::import('Helper', 'MenuBuilder.MenuBuilder');
-App::import('Core', 'Controller', 'View');
+App::uses('MenuBuilderHelper', 'MenuBuilder.View/Helper');
+App::uses('Controller', 'Controller');
+App::uses('View', 'View');
 
 class MenuBuilderHelperTest extends CakeTestCase {
 
@@ -45,7 +46,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
         $this->Conroller->set(compact('user'));
         $this->Conroller->set(compact('admin'));
         $this->View = new View($this->Conroller);
-        $this->MenuBuilder = new MenuBuilderHelper();
+        $this->View->request = new CakeRequest;
+        $this->MenuBuilder = new MenuBuilderHelper($this->View);
     }
 
 /**
@@ -910,7 +912,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
         );
         $this->assertTags($result, $expected, true);
         
-        $this->MenuBuilder = new MenuBuilderHelper(array('authVar' => 'admin'));
+        $this->MenuBuilder = new MenuBuilderHelper($this->View, array('authVar' => 'admin'));
         $result = $this->MenuBuilder->build(null, array(), $menu);
         $expected = array(
             '<ul',
@@ -936,7 +938,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
         );
         $this->assertTags($result, $expected, true);
         
-        $this->MenuBuilder = new MenuBuilderHelper(array('authVar' => 'guest'));
+        $this->MenuBuilder = new MenuBuilderHelper($this->View, array('authVar' => 'guest'));
         $result = $this->MenuBuilder->build(null, array(), $menu);
         $expected = array(
             '<ul',
