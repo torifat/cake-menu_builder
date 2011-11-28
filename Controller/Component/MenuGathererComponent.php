@@ -1,4 +1,5 @@
 <?php
+App::uses('Component', 'Controller');
 class MenuGathererComponent extends Component {
 	protected $_controller;
 
