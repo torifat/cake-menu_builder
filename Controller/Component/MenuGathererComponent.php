@@ -1,4 +1,5 @@
 <?php
+App::uses('Component', 'Controller');
 class MenuGathererComponent extends Component {
 	protected $_controller;
 
@@ -24,7 +25,7 @@ class MenuGathererComponent extends Component {
 	 * @param Controller $controller Instantiating controller
 	 * @return void
 	 */
-	public function initialize($controller) {
+	public function initialize(Controller $controller) {
 
 	}
 
@@ -61,7 +62,7 @@ class MenuGathererComponent extends Component {
 		$this->_checkMenu($menu);
 
 		if (is_null($index)) {
-			$this->_menu[$name][] = $item;
+			$this->_menu[$menu][] = $item;
 
 			return;
 		}
@@ -94,7 +95,7 @@ class MenuGathererComponent extends Component {
 		}
 
 		if (!isset($this->_menu[$name])) {
-			$this->setMenu($name);
+			$this->set($name);
 		}
 	}
 }

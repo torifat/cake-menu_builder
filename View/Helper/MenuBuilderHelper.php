@@ -8,6 +8,7 @@
  * @package MenuBuilder
  * @subpackage MenuBuilder.views.helpers
  */
+App::uses('AppHelper', 'View/Helper');
 class MenuBuilderHelper extends AppHelper {
 /**
  * Helper dependencies
