@@ -47,6 +47,20 @@ In your plugin directory type
 # Usage
 
 ## Minimal Setup
+Load the Plugin by modifying your app/Config/bootstrap.php
+
+    <?php
+    ...
+    CakePlugin::load('MenuBuilder');
+    ?>
+
+or
+
+    <?php
+    ...
+    CakePlugin::loadAll();
+    ?>
+
 To use this helper add the following to your AppController:
 
     <?php
