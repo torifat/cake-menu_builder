@@ -25,7 +25,7 @@ Now it supports menus built with [ACL Menu Component](http://mark-story.com/post
 
 ### Manual
 
-* Download this: http://github.com/torifat/cake-menu_builder/zipball/master
+* Download this: http://github.com/torifat/cake-menu_builder/zipball/2.0
 * Unzip that download.
 * Copy the resulting folder to `app/plugins`
 * Rename the folder you just copied to `menu_builder`
