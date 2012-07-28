@@ -16,7 +16,7 @@ class MenuBuilderHelper extends AppHelper {
  * @var array
  * @access public
  */
-    var $helpers = array('Html');
+	public $helpers = array('Html');
 
 /**
  * Array of global menu
@@ -24,7 +24,7 @@ class MenuBuilderHelper extends AppHelper {
  * @var array
  * @access protected
  */
-    protected $_menu = array();
+	protected $_menu = array();
 
 /**
  * Current user group
@@ -32,7 +32,7 @@ class MenuBuilderHelper extends AppHelper {
  * @var String
  * @access protected
  */
-    protected $_group = null;
+	protected $_group = null;
 
 /**
  * Current depth of menu
@@ -40,7 +40,7 @@ class MenuBuilderHelper extends AppHelper {
  * @var Integer
  * @access protected
  */
-    protected $_depth = 0;
+	protected $_depth = 0;
 
 /**
  * defaults property
@@ -48,18 +48,18 @@ class MenuBuilderHelper extends AppHelper {
  * @var array
  * @access public
  */
-    public $defaults = array(
-        'separator' => false,
-        'children' => null,
-        'title' => null,
-        'url' => null,
+	public $defaults = array(
+		'separator' => false,
+		'children' => null,
+		'title' => null,
+		'url' => null,
 		'ulId' => null,
-        'alias' => array(),
-        'partialMatch' => false,
-        'permissions' => array(),
-        'id' => null,
-        'class' => null,
-    );
+		'alias' => array(),
+		'partialMatch' => false,
+		'permissions' => array(),
+		'id' => null,
+		'class' => null,
+	);
 
 /**
  * settings property
@@ -67,47 +67,47 @@ class MenuBuilderHelper extends AppHelper {
  * @var array
  * @access public
  */
-    public $settings = array(
-        'activeClass' => 'active',
-        'firstClass' => 'first-item',
-        'childrenClass' => 'has-children',
-        'evenOdd' => false,
-        'itemFormat' => '<li%s>%s%s</li>',
-        'wrapperFormat' => '<ul%s>%s</ul>',
-        'noLinkFormat' => '<a href="#">%s</a>',
-        'menuVar' => 'menu',
-        'authVar' => 'user',
-        'authModel' => 'User',
-        'authField' => 'group',
-    );
+	public $settings = array(
+		'activeClass' => 'active',
+		'firstClass' => 'first-item',
+		'childrenClass' => 'has-children',
+		'evenOdd' => false,
+		'itemFormat' => '<li%s>%s%s</li>',
+		'wrapperFormat' => '<ul%s>%s</ul>',
+		'noLinkFormat' => '<a href="#">%s</a>',
+		'menuVar' => 'menu',
+		'authVar' => 'user',
+		'authModel' => 'User',
+		'authField' => 'group',
+	);
 
 /**
  * Constructor.
  *
  * @access public
  */
-    function __construct(View $View, $settings = array()) {
+	public function __construct(View $View, $settings = array()) {
 		if (isset($settings['defaults'])) {
 			$this->defaults = array_merge($this->defaults, $settings['defaults']);
 			unset($settings['defaults']);
 		}
 
-        $this->settings = array_merge($this->settings, (array) $settings);
+		$this->settings = array_merge($this->settings, (array) $settings);
 
-        if (!isset($View->viewVars[$this->settings['menuVar']])) {
-        	return;
-        }
+		if (!isset($View->viewVars[$this->settings['menuVar']])) {
+			return;
+		}
 
-        $this->_menu = $View->viewVars[$this->settings['menuVar']];
+		$this->_menu = $View->viewVars[$this->settings['menuVar']];
 
-        if (isset($View->viewVars[$this->settings['authVar']]) &&
+		if (isset($View->viewVars[$this->settings['authVar']]) &&
 			isset($View->viewVars[$this->settings['authVar']][$this->settings['authModel']]) &&
 			isset($View->viewVars[$this->settings['authVar']][$this->settings['authModel']][$this->settings['authField']])) {
-	       	$this->_group = $View->viewVars[$this->settings['authVar']][$this->settings['authModel']][$this->settings['authField']];
-        }
+			 	$this->_group = $View->viewVars[$this->settings['authVar']][$this->settings['authModel']][$this->settings['authField']];
+		}
 
 		parent::__construct($View, (array)$settings);
-    }
+	}
 
 /**
  * Returns the whole menu HTML.
@@ -118,14 +118,14 @@ class MenuBuilderHelper extends AppHelper {
  * @return string HTML menu
  * @access public
  */
-    public function build($id = null, $options = array(), &$data = null, &$isActive = false) {
-        if(is_null($data)) {
-        	$data =& $this->_menu;
-        }
+	public function build($id = null, $options = array(), &$data = null, &$isActive = false) {
+		if (is_null($data)) {
+			$data =& $this->_menu;
+		}
 
-        if(!empty($options)) {
-        	$this->settings = array_merge($this->settings, $options);
-        }
+		if (!empty($options)) {
+			$this->settings = array_merge($this->settings, $options);
+		}
 
 		if (isset($data[$id])) {
 			$parent =& $data[$id];
@@ -133,44 +133,44 @@ class MenuBuilderHelper extends AppHelper {
 			$parent =& $data;
 		}
 
-        $out = '';
-        $offset = 0;
-        $nowIsActive = false;
-        if(is_array($parent)) {
-        	foreach($parent as $pos => $item) {
-        		$this->_depth++;
+		$out = '';
+		$offset = 0;
+		$nowIsActive = false;
+		if (is_array($parent)) {
+			foreach ($parent as $pos => $item) {
+				$this->_depth++;
 
-                $ret = $this->_buildItem($item, $pos-$offset, $nowIsActive);
+				$ret = $this->_buildItem($item, $pos-$offset, $nowIsActive);
 
-                if ($ret==='') {
-                	$offset++;
-                }
+				if ($ret==='') {
+					$offset++;
+				}
 
-                $out .= $ret;
+				$out .= $ret;
 
-                $this->_depth--;
+				$this->_depth--;
 
-                $isActive = $isActive || $nowIsActive;
-        	}
-        }
+				$isActive = $isActive || $nowIsActive;
+			}
+		}
 
-        if ($out==='') {
-        	return '';
-        }
+		if ($out==='') {
+			return '';
+		}
 
 		$ulId = (isset($this->settings['ulId'])) ? $this->settings['ulId'] : $id;
 
 
-        $class = (isset($id) && ($id != 'children')) ? ' id="'.$ulId.'"' : '';
+		$class = (isset($id) && ($id != 'children')) ? ' id="'.$ulId.'"' : '';
 
-        if (isset($options['class'])) {
-        	$class .= ' class="'.$options['class'].'"';
-        }
+		if (isset($options['class'])) {
+			$class .= ' class="'.$options['class'].'"';
+		}
 
-        $pad = str_repeat("\t", $this->_depth);
+		$pad = str_repeat("\t", $this->_depth);
 
-        return sprintf('%s'.$this->settings['wrapperFormat']."\n", $pad, $class, "\n".$out.$pad);
-    }
+		return sprintf('%s'.$this->settings['wrapperFormat']."\n", $pad, $class, "\n".$out.$pad);
+	}
 
 /**
  * Returns a menu item HTML.
@@ -180,97 +180,97 @@ class MenuBuilderHelper extends AppHelper {
  * @return string HTML menu item
  * @access protected
  */
-    protected function _buildItem(&$item, $pos = -1, &$isActive = false) {
-        $item = array_merge($this->defaults, $item);
+	protected function _buildItem(&$item, $pos = -1, &$isActive = false) {
+		$item = array_merge($this->defaults, $item);
 
-        if ($item['separator']) {
-        	return $item['separator'];
-        }
+		if ($item['separator']) {
+			return $item['separator'];
+		}
 
-        if (is_null($item['title'])) {
-        	return '';
-        }
+		if (is_null($item['title'])) {
+			return '';
+		}
 
-        if (!empty($item['permissions']) && !in_array($this->_group, (array)$item['permissions'])) {
-        	return '';
-        }
+		if (!empty($item['permissions']) && !in_array($this->_group, (array)$item['permissions'])) {
+			return '';
+		}
 
-        $children = '';
-        $nowIsActive = false;
-        if ($hasChildren = is_array($item['children'])) {
-        	$this->_depth++;
+		$children = '';
+		$nowIsActive = false;
+		if ($hasChildren = is_array($item['children'])) {
+			$this->_depth++;
 
-            $children = $this->build('children', array(), $item, $nowIsActive);
+			$children = $this->build('children', array(), $item, $nowIsActive);
 
-            $this->_depth--;
-        }
+			$this->_depth--;
+		}
 
-        // For Permissions empty child
-        if($children==='') {
-        	$hasChildren = false;
-        }
+		// For Permissions empty child
+		if ($children==='') {
+			$hasChildren = false;
+		}
 
-        $check = false;
-        if(isset($item['url'])) {
-        	if($item['partialMatch']) {
-            	$check = (strpos(Router::normalize($this->here), Router::normalize($item['url']))===0);
-            } else {
-            	$check = Router::normalize($this->here) === Router::normalize($item['url']);
-            }
-        }
+		$check = false;
+		if (isset($item['url'])) {
+			if ($item['partialMatch']) {
+				$check = (strpos(Router::normalize($this->here), Router::normalize($item['url']))===0);
+			} else {
+				$check = Router::normalize($this->here) === Router::normalize($item['url']);
+			}
+		}
 
-        $isActive = $nowIsActive || $check;
+		$isActive = $nowIsActive || $check;
 
-        $arrClass = array();
+		$arrClass = array();
 
-        if ($pos===0) {
-        	$arrClass[] = $this->settings['firstClass'];
-        }
+		if ($pos===0) {
+			$arrClass[] = $this->settings['firstClass'];
+		}
 
-        if ($isActive) {
-        	$arrClass[] = $this->settings['activeClass'];
-        }
+		if ($isActive) {
+			$arrClass[] = $this->settings['activeClass'];
+		}
 
-        if ($hasChildren) {
-        	$arrClass[] = $this->settings['childrenClass'];
-        }
+		if ($hasChildren) {
+			$arrClass[] = $this->settings['childrenClass'];
+		}
 
-        if ($this->settings['evenOdd']) {
-        	$arrClass[] = (($pos&1)?'even':'odd');
-        }
+		if ($this->settings['evenOdd']) {
+			$arrClass[] = (($pos&1)?'even':'odd');
+		}
 
-        $class = '';
-        $arrClass = array_filter($arrClass);
-        if (isset($item['class'])) {
-        	if (is_array($item['class'])) {
-        		$arrClass = array_merge($arrClass, $item['class']);
-        	}
+		$class = '';
+		$arrClass = array_filter($arrClass);
+		if (isset($item['class'])) {
+			if (is_array($item['class'])) {
+				$arrClass = array_merge($arrClass, $item['class']);
+			}
 
-            else $arrClass[] = $item['class'];
-        }
+			else $arrClass[] = $item['class'];
+		}
 
-        if (!empty($arrClass)) {
-        	$class = ' class="'.implode(' ', $arrClass).'"';
-        }
+		if (!empty($arrClass)) {
+			$class = ' class="'.implode(' ', $arrClass).'"';
+		}
 
-        if(isset($item['id'])) {
-        	$class = ' id="'.$item['id'].'"'.$class;
-        }
+		if (isset($item['id'])) {
+			$class = ' id="'.$item['id'].'"'.$class;
+		}
 
-        if (is_null($item['url'])) {
-        	$url = sprintf($this->settings['noLinkFormat'], $item['title']);
-        } else {
-        	$url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
-        }
+		if (is_null($item['url'])) {
+			$url = sprintf($this->settings['noLinkFormat'], $item['title']);
+		} else {
+			$url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
+		}
 
-        $pad = str_repeat("\t", $this->_depth);
-        if($hasChildren) {
-        	$urlPad = str_repeat("\t", $this->_depth+1);
-            $url = "\n".$urlPad.$url;
-            $children = "\n".$children.$pad;
-        }
+		$pad = str_repeat("\t", $this->_depth);
+		if ($hasChildren) {
+			$urlPad = str_repeat("\t", $this->_depth+1);
+			$url = "\n".$urlPad.$url;
+			$children = "\n".$children.$pad;
+		}
 
-        return sprintf('%s'.$this->settings['itemFormat']."\n", $pad, $class, $url, $children);
-    }
+		return sprintf('%s'.$this->settings['itemFormat']."\n", $pad, $class, $url, $children);
+	}
 
 }
