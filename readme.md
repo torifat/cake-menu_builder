@@ -330,7 +330,7 @@ Now we have to define permissions in our menu like this:
 Array of type/group/permission/level whose can view that item *(default - `array()`)*
 
 **partialMatch**
-Normally `url` matching are strict. Suppose you are in `/items/details` and your menu contains an entry for `/item` then by default it'll not set active. But if you set `partialMatch` to `true` then it'll set active . *(default - `false`)*
+Normally `url` matching are strict. Suppose you are in `/items/details` and your menu contains an entry for `/items` then by default it'll not set active. But if you set `partialMatch` to `true` then it'll set active . *(default - `false`)*
 
 **id**
 Provide CSS id to the item *(default - `null`)*
