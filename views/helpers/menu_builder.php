@@ -60,7 +60,7 @@ class MenuBuilderHelper extends AppHelper {
         'permissions' => array(),
         'id' => null,
         'class' => null,
-    	'disableActiveLink' => false,
+        'disableActiveLink' => false,
     );
     
 /**
@@ -81,7 +81,7 @@ class MenuBuilderHelper extends AppHelper {
         'authVar' => 'user',
         'authModel' => 'User',
         'authField' => 'group',
-    	'disableActiveLink' => false
+        'disableActiveLink' => false
     );
     
 /**
@@ -208,8 +208,8 @@ class MenuBuilderHelper extends AppHelper {
         
         if(is_null($item['url'])) $url = sprintf($this->settings['noLinkFormat'], $item['title']);
         else {
-        	if ($isActive && true === $this->settings['disableActiveLink'] && false === $hasChildren) $url = $item['title'];
-        	else $url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
+            if ($isActive && true === $this->settings['disableActiveLink'] && false === $hasChildren) $url = $item['title'];
+            else $url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
         }
         
         $pad = str_repeat("\t", $this->_depth);
