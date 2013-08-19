@@ -79,6 +79,7 @@ class MenuBuilderHelper extends AppHelper {
 		'authVar' => 'user',
 		'authModel' => 'User',
 		'authField' => 'group',
+		'indentHtmlOutput' => true,
 	);
 
 /**
@@ -167,9 +168,14 @@ class MenuBuilderHelper extends AppHelper {
 			$class .= ' class="'.$options['class'].'"';
 		}
 
-		$pad = str_repeat("\t", $this->_depth);
+		if ($this->settings['indentHtmlOutput']) {
+			$pad = str_repeat("\t", $this->_depth);
+			$ret = "\n";
+		} else {
+			$pad = $ret = '';
+		}
 
-		return sprintf('%s'.$this->settings['wrapperFormat']."\n", $pad, $class, "\n".$out.$pad);
+		return sprintf('%s'.$this->settings['wrapperFormat'].$ret, $pad, $class, $ret.$out.$pad);
 	}
 
 /**
@@ -263,14 +269,18 @@ class MenuBuilderHelper extends AppHelper {
 			$url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
 		}
 
-		$pad = str_repeat("\t", $this->_depth);
+		if ($this->settings['indentHtmlOutput']) {
+			$pad = str_repeat("\t", $this->_depth);
+			$ret = "\n";
+		} else {
+			$pad = $ret = '';
+		}
 		if ($hasChildren) {
-			$urlPad = str_repeat("\t", $this->_depth+1);
-			$url = "\n".$urlPad.$url;
-			$children = "\n".$children.$pad;
+			$url = $ret.$pad."\t".$url;
+			$children = $ret.$children.$pad;
 		}
 
-		return sprintf('%s'.$this->settings['itemFormat']."\n", $pad, $class, $url, $children);
+		return sprintf('%s'.$this->settings['itemFormat'].$ret, $pad, $class, $url, $children);
 	}
 
 }
