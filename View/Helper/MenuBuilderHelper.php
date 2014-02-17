@@ -266,7 +266,7 @@ class MenuBuilderHelper extends AppHelper {
 		if (is_null($item['url'])) {
 			$url = sprintf($this->settings['noLinkFormat'], $item['title']);
 		} else {
-			$url = '<a title="'.$item['title'].'" href="'.Router::url($item['url']).'">'.$item['title'].'</a>';
+			$url = '<a title="'.$item['title'].'" href="' . $this->Html->url($item['url']) . '">' . $item['title'] . '</a>';
 		}
 
 		if ($this->settings['indentHtmlOutput']) {
