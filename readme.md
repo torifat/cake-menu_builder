@@ -19,13 +19,13 @@ Now it supports menus built with [ACL Menu Component](http://mark-story.com/post
 ## Requirements
 
 * Built for PHP 5.* I'm not interested about PHP 4 but you can modify it easily :)
-* CakePHP 1.3.*. Untested with the 1.2.x series, but should work fine
+* CakePHP 2.0.0
 
 ## Installation
 
 ### Manual
 
-* Download this: http://github.com/torifat/cake-menu_builder/zipball/master
+* Download this: http://github.com/torifat/cake-menu_builder/zipball/2.0
 * Unzip that download.
 * Copy the resulting folder to `app/plugins`
 * Rename the folder you just copied to `menu_builder`
@@ -47,6 +47,20 @@ In your plugin directory type
 # Usage
 
 ## Minimal Setup
+Load the Plugin by modifying your app/Config/bootstrap.php
+
+    <?php
+    ...
+    CakePlugin::load('MenuBuilder');
+    ?>
+
+or
+
+    <?php
+    ...
+    CakePlugin::loadAll();
+    ?>
+
 To use this helper add the following to your AppController:
 
     <?php
@@ -98,7 +112,7 @@ To use this helper add the following to your AppController:
 Now to build your `main-menu` use the following code in the View:
 
     <?php 
-        echo $menuBuilder->build('main-menu');
+        echo $this->MenuBuilder->build('main-menu');
     ?>
 
 You'll get the following output in the Home (/pages/home) page:
@@ -111,7 +125,7 @@ You'll get the following output in the Home (/pages/home) page:
 And to build your `left-menu` use the following code in the View:
 
     <?php 
-        echo $menuBuilder->build('left-menu'); 
+        echo $this->MenuBuilder->build('left-menu'); 
     ?>
 
 You'll get the following output in your 'Item 4' (/items/view/4) page:
@@ -136,9 +150,9 @@ You'll get the following output in your 'Item 4' (/items/view/4) page:
 You can pass optional parameter in `build` function like -
 
     <?php
-        echo $menuBuilder->build('main-menu', array('class' => array('fun', 'red'));
+        echo $this->MenuBuilder->build('main-menu', array('class' => array('fun', 'red'));
         // OR
-        echo $menuBuilder->build('main-menu', array('class' => 'fun green');
+        echo $this->MenuBuilder->build('main-menu', array('class' => 'fun green');
     ?>
 
 ## Advance Setup
@@ -316,7 +330,7 @@ Now we have to define permissions in our menu like this:
 Array of type/group/permission/level whose can view that item *(default - `array()`)*
 
 **partialMatch**
-Normally `url` matching are strict. Suppose you are in `/items/details` and your menu contains an entry for `/item` then by default it'll not set active. But if you set `partialMatch` to `true` then it'll set active . *(default - `false`)*
+Normally `url` matching are strict. Suppose you are in `/items/details` and your menu contains an entry for `/items` then by default it'll not set active. But if you set `partialMatch` to `true` then it'll set active . *(default - `false`)*
 
 **id**
 Provide CSS id to the item *(default - `null`)*
