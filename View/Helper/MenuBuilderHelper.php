@@ -1,15 +1,15 @@
 <?php
+App::uses('AppHelper', 'View/Helper');
+
 /**
  * MenuBuilder Helper
  *
  * This helper will build Dynamic Menu
  *
  * @author M. M. Rifat-Un-Nabi <to.rifat@gmail.com>
- * @package MenuBuilder
- * @subpackage MenuBuilder.views.helpers
  */
-App::uses('AppHelper', 'View/Helper');
 class MenuBuilderHelper extends AppHelper {
+
 /**
  * Helper dependencies
  *
@@ -155,17 +155,23 @@ class MenuBuilderHelper extends AppHelper {
 			}
 		}
 
-		if ($out==='') {
+		if ($out === '') {
 			return '';
 		}
 
 		$ulId = (isset($this->settings['ulId'])) ? $this->settings['ulId'] : $id;
 
+		$class = array();
+		if ($ulId && !$this->_depth) {
+			$class[] = $ulId;
+		}
+		if (!empty($options['class'])) {
+			$class[] = $options['class'];
+		}
+		$class = !empty($class) ? ' class="' . implode(' ', $class) . '"' : '';
 
-		$class = (isset($id) && ($id != 'children')) ? ' id="'.$ulId.'"' : '';
-
-		if (isset($options['class'])) {
-			$class .= ' class="'.$options['class'].'"';
+		if ($ulId && !$this->_depth) {
+			$class .= ' id="' . $ulId . '"';
 		}
 
 		if ($this->settings['indentHtmlOutput']) {
@@ -212,14 +218,14 @@ class MenuBuilderHelper extends AppHelper {
 		}
 
 		// For Permissions empty child
-		if ($children==='') {
+		if ($children === '') {
 			$hasChildren = false;
 		}
 
 		$check = false;
 		if (isset($item['url'])) {
 			if ($item['partialMatch']) {
-				$check = (strpos(Router::normalize($this->here), Router::normalize($item['url']))===0);
+				$check = (strpos(Router::normalize($this->here), Router::normalize($item['url'])) === 0);
 			} else {
 				$check = Router::normalize($this->here) === Router::normalize($item['url']);
 			}

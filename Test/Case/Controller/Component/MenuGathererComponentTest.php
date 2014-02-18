@@ -1,41 +1,36 @@
 <?php
-/* MenuGatherer Test cases generated on: 2011-11-28 01:44:52 : 1322444692*/
 App::uses('MenuGathererComponent', 'MenuBuilder.Controller/Component');
+App::uses('Controller', 'Controller');
 
 class TestMenuGathererComponent extends MenuGathererComponent {
+
+	public $name = 'MenuGatherer';
+
 	public $cacheKey = 'test_menu_storage';
 
-/**
- * testStop property
- *
- * @var bool false
- */
-	public $testStop = false;
-
-/**
- * Fake getControllers to reflect things in TestCase
- *
- * @return void
- **/
-	public function getControllers() {
-		return array('Controller1', 'Controller2');
+	public function getMenu() {
+		return $this->_menu;
 	}
 
 }
 
 
-class TestMenuGathererController extends AppController {
-	public $components = array('MenuBuilder.MenuGatherer');
+class TestMenuGathererController extends Controller {
+
+	public $components = array('MenuBuilder.TestMenuGatherer');
 }
 
 class AuthUser extends CakeTestModel {
+
 	public $name = 'AuthUser';
+
 }
 
 class Controller1Controller extends Controller {
 	public function action1() {}
 	public function action2() {}
 }
+
 class Controller2Controller extends Controller {
 	public function action1() {}
 	public function action2() {}
@@ -47,6 +42,7 @@ class Controller2Controller extends Controller {
  *
  */
 class MenuGathererComponentTestCase extends CakeTestCase {
+
 /**
  * setUp method
  *
@@ -56,11 +52,12 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 		parent::setUp();
 		$this->_admin = Configure::read('Routing.prefixes.0');
 		Configure::write('Routing.prefixes.0', 'admin');
-		$_SESSION = null;
-		$this->Controller = new TestMenuGathererController();
-		$this->Collection = new ComponentCollection();
-		$this->MenuGatherer = new MenuGathererComponent($this->Collection);
-		$this->MenuGatherer->startup($this->Controller);
+		CakeSession::destroy();
+		$this->Controller = new TestMenuGathererController(new CakeRequest(), new CakeResponse());
+		$this->Controller->constructClasses();
+		$this->Controller->startupProcess();
+
+		$this->MenuGatherer = new TestMenuGathererComponent(new ComponentCollection());
 	}
 
 /**
@@ -75,18 +72,6 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 	}
 
 /**
- * testControllerMenu method
- *
- * @return void
- */
-	public function testControllerMenu() {
-		//$this->MenuGatherer->controllerMenu('main');
-		//$expected = '';
-		//"<code><pre>" . h($result) . '</pre></code>';
-		//$this->assertEquals($expected, $result);
-	}
-
-/**
  * testGet method
  *
  * @return void
@@ -94,7 +79,6 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 	public function testGet() {
 		$result = $this->MenuGatherer->get();
 		$expected = array();
-		"<code><pre>" . h($result) . '</pre></code>';
 		$this->assertEquals($expected, $result);
 	}
 
@@ -106,9 +90,7 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 	public function testItem() {
 		$this->MenuGatherer->item('main', array('item1' => array('controller' => 'pages', 'action' => 'display', 'item1')));
 		$result = $this->MenuGatherer->get('main');
-		//$expected = array('main' => array('item1' => array('controller' => 'pages', 'action' => 'display', 'item1')));
 		$expected = array(array('item1' => array('controller' => 'pages', 'action' => 'display', 'item1'))); //?
-		"<code><pre>" . h($result) . '</pre></code>';
 		$this->assertEquals($expected, $result);
 	}
 
@@ -153,7 +135,6 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 				'url' => '/contact',
 			),
 		);
-		"<code><pre>" . h($result) . '</pre></code>';
 		$this->assertEquals($expected, $result);
 	}
 
@@ -166,7 +147,6 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 		$this->MenuGatherer->set(array('item1' => array('controller' => 'pages', 'action' => 'display', 'item1'), 'item1' => array('controller' => 'pages', 'action' => 'display', 'item1')));
 		$expected = $this->MenuGatherer->get();
 		$result = array('item1' => array('controller' => 'pages', 'action' => 'display', 'item1'));
-		"<code><pre>" . h($result) . '</pre></code>';
 		$this->assertEquals($expected, $result);
 	}
 

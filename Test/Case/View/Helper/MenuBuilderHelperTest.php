@@ -10,7 +10,9 @@ class MenuBuilderHelperTest extends CakeTestCase {
  *
  * @return void
  **/
-	public function startTest() {
+	public function setUp() {
+		parent::setUp();
+
 		$menu = array(
 			array(
 				'title' => 'Item 1',
@@ -40,13 +42,13 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			)
 		);
 
-		$this->Conroller = new Controller();
-		$this->Conroller->set(compact('menu'));
-		$this->Conroller->set(compact('guest'));
-		$this->Conroller->set(compact('user'));
-		$this->Conroller->set(compact('admin'));
-		$this->View = new View($this->Conroller);
-		$this->View->request = new CakeRequest;
+		$this->Controller = new Controller();
+		$this->Controller->set(compact('menu'));
+		$this->Controller->set(compact('guest'));
+		$this->Controller->set(compact('user'));
+		$this->Controller->set(compact('admin'));
+		$this->View = new View($this->Controller);
+		$this->View->request = new CakeRequest(null, false);
 		$this->MenuBuilder = new MenuBuilderHelper($this->View);
 	}
 
@@ -55,8 +57,9 @@ class MenuBuilderHelperTest extends CakeTestCase {
  *
  * @return void
  **/
-	public function endTest() {
+	public function tearDown() {
 		unset($this->MenuBuilder, $this->view);
+		parent::tearDown();
 	}
 
 /**
@@ -729,7 +732,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
 
 		$result = $this->MenuBuilder->build('first-menu', array(), $menu);
 		$expected = array(
-			array('ul' => array('id' => 'first-menu')),
+			array('ul' => array('class' => 'first-menu', 'id' => 'first-menu')),
 				array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a', '</li',
 				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
 			'</ul'
@@ -739,7 +742,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
 
 		$result = $this->MenuBuilder->build('second-menu', array(), $menu);
 		$expected = array(
-			array('ul' => array('id' => 'second-menu')),
+			array('ul' => array('class' => 'second-menu', 'id' => 'second-menu')),
 				array('li' => array('class' => 'first-item has-children')),
 					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
 					'<ul',
