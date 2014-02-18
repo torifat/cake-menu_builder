@@ -400,9 +400,11 @@ If you want to define some separator in your menu, below is a nice example of wh
 *Add More Test Cases*
 
 
-# License
+## License
 
-Copyright (c) 2011 M. M. Rifat-Un-Nabi
+The MIT License (MIT)
+
+Copyright (c) 2011 Rifat-Un-Nabi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

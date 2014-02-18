@@ -1,11 +1,36 @@
 {
 	"name" : "torifat/cake-menu_builder",
+	"description": "A dynamic menu building helper for CakePHP 2.x",
 	"type" : "cakephp-plugin",
+	"keywords": [
+		"cakephp",
+		"menu",
+		"helper",
+		"dynamic"
+	],
 	"homepage" : "https://github.com/torifat/cake-menu_builder",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Rifat Nabi",
+			"email": "to.rifat@gmail.com",
+			"homepage": "http://rifatnabi.com",
+			"role": "Maintainer"
+		},
+    {
+      "name": "CakePHP Community",
+      "homepage": "https://github.com/torifat/cake-menu_builder/graphs/contributors",
+			"role": "Contributor"
+  }
+	],
 	"require" : {
 		"composer/installers" : "*",
 		"php" : ">=5.3.0"
 	},
+	"support": {
+    "issues": "https://github.com/torifat/cake-menu_builder/issues",
+    "source": "https://github.com/torifat/cake-menu_builder"
+  },
 	"extra" : {
 		"installer-name" : "MenuBuilder"
 	}
