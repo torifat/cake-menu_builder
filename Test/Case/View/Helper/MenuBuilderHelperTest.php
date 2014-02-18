@@ -9,8 +9,10 @@ class MenuBuilderHelperTest extends CakeTestCase {
  * Start Test
  *
  * @return void
- **/
-	public function startTest() {
+ */
+	public function setUp() {
+		parent::setUp();
+
 		$menu = array(
 			array(
 				'title' => 'Item 1',
@@ -40,13 +42,13 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			)
 		);
 
-		$this->Conroller = new Controller();
-		$this->Conroller->set(compact('menu'));
-		$this->Conroller->set(compact('guest'));
-		$this->Conroller->set(compact('user'));
-		$this->Conroller->set(compact('admin'));
-		$this->View = new View($this->Conroller);
-		$this->View->request = new CakeRequest;
+		$this->Controller = new Controller();
+		$this->Controller->set(compact('menu'));
+		$this->Controller->set(compact('guest'));
+		$this->Controller->set(compact('user'));
+		$this->Controller->set(compact('admin'));
+		$this->View = new View($this->Controller);
+		$this->View->request = new CakeRequest(null, false);
 		$this->MenuBuilder = new MenuBuilderHelper($this->View);
 	}
 
@@ -54,32 +56,31 @@ class MenuBuilderHelperTest extends CakeTestCase {
  * End Test
  *
  * @return void
- **/
-	public function endTest() {
+ */
+	public function tearDown() {
 		unset($this->MenuBuilder, $this->view);
+		parent::tearDown();
 	}
 
 /**
- * testBuildDefault Default build test
+ * TestBuildDefault Default build test
  *
- * @access public
  * @return void
  */
 	public function testBuildDefault() {
 		$result = $this->MenuBuilder->build();
 		$expected = array(
 			'<ul',
-				array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a', '</li',
-				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
+				array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a', '</li',
+				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
 	}
 
 /**
- * testNoLink Menu with no URL
+ * TestNoLink Menu with no URL
  *
- * @access public
  * @return void
  */
 	public function testNoLink() {
@@ -96,12 +97,11 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$result = $this->MenuBuilder->build(null, array(), $menu);
 		$expected = array(
 			'<ul',
-				array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')),'Item 1', '</a', '</li',
-				'<li', array('a' => array('href' => '#')),'Item 2', '</a', '</li',
+				array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')), 'Item 1', '</a', '</li',
+				'<li', array('a' => array('href' => '#')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With One One Level Sub Menu
 		$menu[0]['children'] = array(
@@ -117,17 +117,16 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '#')),'Item 1', '</a',
+					array('a' => array('href' => '#')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')),'Item 1.1', '</a', '</li',
-						'<li', array('a' => array('href' => '#')),'Item 1.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')), 'Item 1.1', '</a', '</li',
+						'<li', array('a' => array('href' => '#')), 'Item 1.2', '</a', '</li',
 					'</ul',
 				'</li',
-				'<li', array('a' => array('href' => '#')),'Item 2', '</a', '</li',
+				'<li', array('a' => array('href' => '#')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With Two One Level Sub Menu
 		$menu[1]['children'] = array(
@@ -143,17 +142,17 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '#')),'Item 1', '</a',
+					array('a' => array('href' => '#')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')),'Item 1.1', '</a', '</li',
-						'<li', array('a' => array('href' => '#')),'Item 1.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')), 'Item 1.1', '</a', '</li',
+						'<li', array('a' => array('href' => '#')), 'Item 1.2', '</a', '</li',
 					'</ul',
 				'</li',
 				array('li' => array('class' => 'has-children')),
-					array('a' => array('href' => '#')),'Item 2', '</a',
+					array('a' => array('href' => '#')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '#')),'Item 2.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '#')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
@@ -174,35 +173,33 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '#')),'Item 1', '</a',
+					array('a' => array('href' => '#')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')),'Item 1.1', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')), 'Item 1.1', '</a', '</li',
 						array('li' => array('class' => 'has-children')),
-							array('a' => array('href' => '#')),'Item 1.2', '</a',
+							array('a' => array('href' => '#')), 'Item 1.2', '</a',
 							'<ul',
-								array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')),'Item 1.2.1', '</a', '</li',
-								'<li', array('a' => array('href' => '#')),'Item 1.2.2', '</a', '</li',
+								array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')), 'Item 1.2.1', '</a', '</li',
+								'<li', array('a' => array('href' => '#')), 'Item 1.2.2', '</a', '</li',
 							'</ul',
 						'</li',
 					'</ul',
 				'</li',
 				array('li' => array('class' => 'has-children')),
-					array('a' => array('href' => '#')),'Item 2', '</a',
+					array('a' => array('href' => '#')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '#')),'Item 2.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '#')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '#')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 	}
 
 /**
- * testWithLink Menu with URL
+ * TestWithLink Menu with URL
  *
- * @access public
  * @return void
  */
 	public function testWithLink() {
@@ -221,12 +218,11 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$result = $this->MenuBuilder->build(null, array(), $menu);
 		$expected = array(
 			'<ul',
-				array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a', '</li',
-				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
+				array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a', '</li',
+				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With One One Level Sub Menu
 		$menu[0]['children'] = array(
@@ -244,17 +240,16 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a', '</li',
 					'</ul',
 				'</li',
-				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
+				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With Two One Level Sub Menu
 		$menu[1]['children'] = array(
@@ -272,17 +267,17 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a', '</li',
 					'</ul',
 				'</li',
 				array('li' => array('class' => 'has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
@@ -305,35 +300,33 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
 						array('li' => array('class' => 'has-children')),
-							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a',
+							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a',
 							'<ul',
-								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')),'Item 1.2.1', '</a', '</li',
-								'<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')),'Item 1.2.2', '</a', '</li',
+								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')), 'Item 1.2.1', '</a', '</li',
+								'<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')), 'Item 1.2.2', '</a', '</li',
 							'</ul',
 						'</li',
 					'</ul',
 				'</li',
 				array('li' => array('class' => 'has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 	}
 
 /**
- * testActiveClass Current Page Active class check
+ * TestActiveClass Current Page Active class check
  *
- * @access public
  * @return void
  */
 	public function testActiveClass() {
@@ -353,12 +346,11 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$result = $this->MenuBuilder->build(null, array(), $menu);
 		$expected = array(
 			'<ul',
-				array('li' => array('class' => 'first-item active')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a', '</li',
-				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
+				array('li' => array('class' => 'first-item active')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a', '</li',
+				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With One One Level Sub Menu
 		$this->MenuBuilder->here = '/item-1.2';
@@ -377,17 +369,16 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item active has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
-						array('li' => array('class' => 'active')), array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
+						array('li' => array('class' => 'active')), array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a', '</li',
 					'</ul',
 				'</li',
-				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
+				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With Two One Level Sub Menu
 		$this->MenuBuilder->here = '/item-2.1';
@@ -406,17 +397,17 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a', '</li',
 					'</ul',
 				'</li',
 				array('li' => array('class' => 'active has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item active')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+						array('li' => array('class' => 'first-item active')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
@@ -440,37 +431,35 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item active has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
 						array('li' => array('class' => 'active has-children')),
-							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a',
+							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a',
 							'<ul',
-								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')),'Item 1.2.1', '</a', '</li',
-								array('li' => array('class' => 'active')), array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')),'Item 1.2.2', '</a', '</li',
+								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')), 'Item 1.2.1', '</a', '</li',
+								array('li' => array('class' => 'active')), array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')), 'Item 1.2.2', '</a', '</li',
 							'</ul',
 						'</li',
 					'</ul',
 				'</li',
 				array('li' => array('class' => 'has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 	}
 
  /**
- * testId Test Id
- *
- * @access public
- * @return void
- */
+  * TestId Test Id
+  *
+  * @return void
+  */
 	public function testId() {
 		// Normal Menu
 		$menu = array(
@@ -488,12 +477,11 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$result = $this->MenuBuilder->build(null, array(), $menu);
 		$expected = array(
 			'<ul',
-				array('li' => array('id' => 'item-1', 'class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a', '</li',
-				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
+				array('li' => array('id' => 'item-1', 'class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a', '</li',
+				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With One One Level Sub Menu
 		unset($menu[0]['id']);
@@ -514,17 +502,16 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
-						array('li' => array('id' => 'item-1.2')), array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
+						array('li' => array('id' => 'item-1.2')), array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a', '</li',
 					'</ul',
 				'</li',
-				array('li' => array('id' => 'item-2')), array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
+				array('li' => array('id' => 'item-2')), array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With Two One Level Sub Menu
 		$menu[1]['children'] = array(
@@ -543,17 +530,17 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
-						array('li' => array('id' => 'item-1.2')), array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
+						array('li' => array('id' => 'item-1.2')), array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a', '</li',
 					'</ul',
 				'</li',
 				array('li' => array('id' => 'item-2', 'class' => 'has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('id' => 'item-2.1', 'class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+						array('li' => array('id' => 'item-2.1', 'class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
@@ -577,35 +564,33 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
 						array('li' => array('id' => 'item-1.2', 'class' => 'has-children')),
-							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a',
+							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a',
 							'<ul',
-								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')),'Item 1.2.1', '</a', '</li',
-								array('li' => array('id' => 'item-1.2.2')), array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')),'Item 1.2.2', '</a', '</li',
+								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')), 'Item 1.2.1', '</a', '</li',
+								array('li' => array('id' => 'item-1.2.2')), array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')), 'Item 1.2.2', '</a', '</li',
 							'</ul',
 						'</li',
 					'</ul',
 				'</li',
 				array('li' => array('id' => 'item-2', 'class' => 'has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('id' => 'item-2.1', 'class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+						array('li' => array('id' => 'item-2.1', 'class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 	}
 
 /**
- * testClass Test Class
+ * TestClass Test Class
  *
- * @access public
  * @return void
  */
 	public function testClass() {
@@ -661,35 +646,33 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item active has-children one two')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item three')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
+						array('li' => array('class' => 'first-item three')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
 						array('li' => array('class' => 'active has-children')),
-							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a',
+							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a',
 							'<ul',
-								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')),'Item 1.2.1', '</a', '</li',
-								array('li' => array('class' => 'four')), array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')),'Item 1.2.2', '</a', '</li',
+								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')), 'Item 1.2.1', '</a', '</li',
+								array('li' => array('class' => 'four')), array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')), 'Item 1.2.2', '</a', '</li',
 							'</ul',
 						'</li',
 					'</ul',
 				'</li',
 				array('li' => array('class' => 'has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item five six seven')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+						array('li' => array('class' => 'first-item five six seven')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 	}
 
 /**
- * testWithLink Menu with URL
+ * TestWithLink Menu with URL
  *
- * @access public
  * @return void
  */
 	public function testMultipleMenu() {
@@ -729,34 +712,32 @@ class MenuBuilderHelperTest extends CakeTestCase {
 
 		$result = $this->MenuBuilder->build('first-menu', array(), $menu);
 		$expected = array(
-			array('ul' => array('id' => 'first-menu')),
-				array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a', '</li',
-				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
+			array('ul' => array('class' => 'first-menu', 'id' => 'first-menu')),
+				array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a', '</li',
+				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
 
-
 		$result = $this->MenuBuilder->build('second-menu', array(), $menu);
 		$expected = array(
-			array('ul' => array('id' => 'second-menu')),
+			array('ul' => array('class' => 'second-menu', 'id' => 'second-menu')),
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a', '</li',
 					'</ul',
 				'</li',
-				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a', '</li',
+				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a', '</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
 	}
 
 /**
- * testPartialMatch Test Partial URL matching
+ * TestPartialMatch Test Partial URL matching
  *
- * @access public
  * @return void
  */
 	public function testPartialMatch() {
@@ -810,35 +791,33 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item active has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
 						array('li' => array('class' => 'active has-children')),
-							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a',
+							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a',
 							'<ul',
-								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')),'Item 1.2.1', '</a', '</li',
-								'<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')),'Item 1.2.2', '</a', '</li',
+								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')), 'Item 1.2.1', '</a', '</li',
+								'<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')), 'Item 1.2.2', '</a', '</li',
 							'</ul',
 						'</li',
 					'</ul',
 				'</li',
 				array('li' => array('class' => 'has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')),'Item 2.1', '</a', '</li',
-						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
+						'<li', array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 	}
 
 /**
- * testPermissions Test URL permission
+ * TestPermissions Test URL permission
  *
- * @access public
  * @return void
  */
 	public function testPermissions() {
@@ -893,20 +872,20 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')),'Item 1.1', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.1', 'title' => 'Item 1.1')), 'Item 1.1', '</a', '</li',
 						array('li' => array('class' => 'has-children')),
-							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a',
+							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a',
 							'<ul',
-								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')),'Item 1.2.1', '</a', '</li',
-								'<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')),'Item 1.2.2', '</a', '</li',
+								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')), 'Item 1.2.1', '</a', '</li',
+								'<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')), 'Item 1.2.2', '</a', '</li',
 							'</ul',
 						'</li',
 					'</ul',
 				'</li',
 				'<li',
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 				'</li',
 			'</ul'
 		);
@@ -917,21 +896,21 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item has-children')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 					'<ul',
 						array('li' => array('class' => 'first-item has-children')),
-							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')),'Item 1.2', '</a',
+							array('a' => array('href' => '/item-1.2', 'title' => 'Item 1.2')), 'Item 1.2', '</a',
 							'<ul',
-								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')),'Item 1.2.1', '</a', '</li',
-								'<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')),'Item 1.2.2', '</a', '</li',
+								array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1.2.1', 'title' => 'Item 1.2.1')), 'Item 1.2.1', '</a', '</li',
+								'<li', array('a' => array('href' => '/item-1.2.2', 'title' => 'Item 1.2.2')), 'Item 1.2.2', '</a', '</li',
 							'</ul',
 						'</li',
 					'</ul',
 				'</li',
 				array('li' => array('class' => 'has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')),'Item 2.2', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.2', 'title' => 'Item 2.2')), 'Item 2.2', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
@@ -943,18 +922,17 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$expected = array(
 			'<ul',
 				array('li' => array('class' => 'first-item')),
-					array('a' => array('href' => '/item-1', 'title' => 'Item 1')),'Item 1', '</a',
+					array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a',
 				'</li',
 				array('li' => array('class' => 'has-children')),
-					array('a' => array('href' => '/item-2', 'title' => 'Item 2')),'Item 2', '</a',
+					array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2', '</a',
 					'<ul',
-						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')),'Item 2.1', '</a', '</li',
+						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
 					'</ul',
 				'</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 	}
 
 }

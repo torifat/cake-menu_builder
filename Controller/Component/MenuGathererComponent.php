@@ -1,23 +1,11 @@
 <?php
 App::uses('Component', 'Controller');
+
 class MenuGathererComponent extends Component {
+
 	protected $_controller;
 
 	protected $_menu = array();
-
-	/**
-	 * Constructor
-	 *
-	 * @param ComponentCollection $collection A ComponentCollection this component can use to lazy load its components
-	 * @param array $settings Array of configuration settings.
-	 */
-	public function __construct(ComponentCollection $collection, $settings = array()) {
-		$this->_controller = $collection->getController();
-
-
-
-		parent::__construct($collection, $settings);
-	}
 
 	/**
 	 * Initialize component
@@ -26,29 +14,19 @@ class MenuGathererComponent extends Component {
 	 * @return void
 	 */
 	public function initialize(Controller $controller) {
+		parent::initialize($controller);
 
+		$this->_controller = $controller;
 	}
 
-	public function controllerMenu($menu, $controller = null, $actions = array(), $index = null) {
-		if (is_null($controller)) {
-			foreach (App::objects('Controller') as $controller) {
-				$this->controllerMenu($controller);
-
-				return;
-			}
-		}
-
-		if (is_null($actions)) {
-			// List all public actions
-		}
-
-		$item = array();
-
-		$this->item($menu, $item, $index);
-	}
-
+	/**
+	 * MenuGathererComponent::get()
+	 *
+	 * @param string $menu
+	 * @return array Menu data
+	 */
 	public function get($menu = null) {
-		if (is_null($menu)) {
+		if ($menu === null) {
 			return $this->_menu;
 		}
 
@@ -57,11 +35,13 @@ class MenuGathererComponent extends Component {
 
 	/**
 	 * Add an item to a menu at the specified position
+	 *
+	 * @return void
 	 */
 	public function item($menu, $item = array(), $index = null) {
 		$this->_checkMenu($menu);
 
-		if (is_null($index)) {
+		if ($index === null) {
 			$this->_menu[$menu][] = $item;
 
 			return;
@@ -70,6 +50,13 @@ class MenuGathererComponent extends Component {
 		$this->_menu = array_splice($this->_menu, $index, 0, $item);
 	}
 
+	/**
+	 * MenuGathererComponent::menu()
+	 *
+	 * @param mixed $name
+	 * @param mixed $menu
+	 * @return void
+	 */
 	public function menu($name, $menu = array()) {
 		if (is_array($name)) {
 			foreach ($name as $key => $val) {
@@ -81,10 +68,22 @@ class MenuGathererComponent extends Component {
 		$this->_menu[$name] = $menu;
 	}
 
+	/**
+	 * MenuGathererComponent::set()
+	 *
+	 * @param mixed $menu
+	 * @return void
+	 */
 	public function set($menu = array()) {
 		$this->_menu = (array) $menu;
 	}
 
+	/**
+	 * MenuGathererComponent::_checkMenu()
+	 *
+	 * @param mixed $name
+	 * @return void
+	 */
 	protected function _checkMenu($name) {
 		if (is_array($name)) {
 			foreach ($name as $val) {
@@ -98,5 +97,5 @@ class MenuGathererComponent extends Component {
 			$this->set($name);
 		}
 	}
+
 }
-?>
