@@ -133,9 +133,9 @@ class MenuBuilderHelper extends AppHelper {
 			foreach ($parent as $pos => $item) {
 				$this->_depth++;
 
-				$ret = $this->_buildItem($item, $pos-$offset, $nowIsActive);
+				$ret = $this->_buildItem($item, $pos - $offset, $nowIsActive);
 
-				if ($ret==='') {
+				if ($ret === '') {
 					$offset++;
 				}
 
@@ -173,7 +173,7 @@ class MenuBuilderHelper extends AppHelper {
 			$pad = $ret = '';
 		}
 
-		return sprintf('%s'.$this->settings['wrapperFormat'].$ret, $pad, $class, $ret.$out.$pad);
+		return sprintf('%s' . $this->settings['wrapperFormat'] . $ret, $pad, $class, $ret . $out . $pad);
 	}
 
 /**
@@ -226,7 +226,7 @@ class MenuBuilderHelper extends AppHelper {
 
 		$arrClass = array();
 
-		if ($pos===0) {
+		if ($pos === 0) {
 			$arrClass[] = $this->settings['firstClass'];
 		}
 
@@ -239,7 +239,7 @@ class MenuBuilderHelper extends AppHelper {
 		}
 
 		if ($this->settings['evenOdd']) {
-			$arrClass[] = (($pos&1)?'even':'odd');
+			$arrClass[] = (($pos & 1) ? 'even' : 'odd');
 		}
 
 		$class = '';
@@ -253,17 +253,17 @@ class MenuBuilderHelper extends AppHelper {
 		}
 
 		if (!empty($arrClass)) {
-			$class = ' class="'.implode(' ', $arrClass).'"';
+			$class = ' class="' . implode(' ', $arrClass) . '"';
 		}
 
 		if (isset($item['id'])) {
-			$class = ' id="'.$item['id'].'"'.$class;
+			$class = ' id="' . $item['id'] . '"' . $class;
 		}
 
 		if ($item['url'] === null) {
 			$url = sprintf($this->settings['noLinkFormat'], $item['title']);
 		} else {
-			$url = '<a title="'.$item['title'].'" href="' . $this->Html->url($item['url']) . '">' . $item['title'] . '</a>';
+			$url = '<a title="' . $item['title'] . '" href="' . $this->Html->url($item['url']) . '">' . $item['title'] . '</a>';
 		}
 
 		if ($this->settings['indentHtmlOutput']) {
@@ -273,11 +273,11 @@ class MenuBuilderHelper extends AppHelper {
 			$pad = $ret = '';
 		}
 		if ($hasChildren) {
-			$url = $ret.$pad."\t".$url;
-			$children = $ret.$children.$pad;
+			$url = $ret . $pad . "\t" . $url;
+			$children = $ret . $children . $pad;
 		}
 
-		return sprintf('%s'.$this->settings['itemFormat'].$ret, $pad, $class, $url, $children);
+		return sprintf('%s' . $this->settings['itemFormat'] . $ret, $pad, $class, $url, $children);
 	}
 
 }
