@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/torifat/cake-menu_builder.png?branch=master)](https://travis-ci.org/torifat/cake-menu_builder) [![Coverage Status](https://coveralls.io/repos/torifat/cake-menu_builder/badge.png?branch=master)](https://coveralls.io/r/torifat/cake-menu_builder?branch=master) [![Total Downloads](https://poser.pugx.org/torifat/cake-menu_builder/d/total.png)](https://packagist.org/packages/torifat/cake-menu_builder) [![Latest Stable Version](https://poser.pugx.org/torifat/cake-menu_builder/v/stable.png)](https://packagist.org/packages/torifat/cake-menu_builder)
+
 # MenuBuilder Helper
 
 A dynamic menu building helper for CakePHP
@@ -18,31 +20,55 @@ Now it supports menus built with [ACL Menu Component](http://mark-story.com/post
 
 ## Requirements
 
-* Built for PHP 5.* I'm not interested about PHP 4 but you can modify it easily :)
-* CakePHP 2.0.0
+* CakePHP 2.x
+* PHP 5.3
 
 ## Installation
 
-### Manual
+_[Using [Composer](http://getcomposer.org/)]_
 
-* Download this: http://github.com/torifat/cake-menu_builder/zipball/2.0
+Add the plugin to your project's `composer.json` - something like this:
+
+```composer
+  {
+    "require": {
+      "torifat/cake-menu_builder": "2.0.1"
+    }
+  }
+```
+
+Because this plugin has the type `cakephp-plugin` set in its own `composer.json`, Composer will install it inside your `/Plugins` directory, rather than in the usual vendors file. It is recommended that you add `/Plugins/MenuBuilder` to your .gitignore file. (Why? [read this](http://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).)
+
+_[Manual]_
+
+* Download this: [http://github.com/torifat/cake-menu_builder/zipball/master](http://github.com/torifat/cake-menu_builder/zipball/master)
 * Unzip that download.
-* Copy the resulting folder to `app/plugins`
-* Rename the folder you just copied to `menu_builder`
+* Copy the resulting folder to `app/Plugin`
+* Rename the folder you just copied to `MenuBuilder`
 
-### GIT Submodule
+_[GIT Submodule]_
 
 In your app directory type:
 
-    git submodule add git://github.com/torifat/cake-menu_builder.git plugins/menu_builder
-    git submodule init
-    git submodule update
+```bash
+  git submodule add -b master git://github.com/torifat/cake-menu_builder.git Plugin/MenuBuilder
+  git submodule init
+  git submodule update
+```
 
-###GIT Clone
+_[GIT Clone]_
 
-In your plugin directory type
+In your `Plugin` directory type:
 
-    git clone git://github.com/torifat/cake-menu_builder.git menu_builder
+    git clone -b master git://github.com/torifat/cake-menu_builder.git MenuBuilder
+
+### Enable plugin
+
+In 2.0 you need to enable the plugin in your `app/Config/bootstrap.php` file:
+
+    CakePlugin::load('MenuBuilder');
+
+If you are already using `CakePlugin::loadAll();`, then this is not necessary.
 
 # Usage
 
