@@ -26,7 +26,7 @@ class MenuGathererComponent extends Component {
 	 * @return array Menu data
 	 */
 	public function get($menu = null) {
-		if (is_null($menu)) {
+		if ($menu === null) {
 			return $this->_menu;
 		}
 
@@ -41,7 +41,7 @@ class MenuGathererComponent extends Component {
 	public function item($menu, $item = array(), $index = null) {
 		$this->_checkMenu($menu);
 
-		if (is_null($index)) {
+		if ($index === null) {
 			$this->_menu[$menu][] = $item;
 
 			return;

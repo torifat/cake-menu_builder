@@ -63,9 +63,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 	}
 
 /**
- * testBuildDefault Default build test
+ * TestBuildDefault Default build test
  *
- * @access public
  * @return void
  */
 	public function testBuildDefault() {
@@ -80,9 +79,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 	}
 
 /**
- * testNoLink Menu with no URL
+ * TestNoLink Menu with no URL
  *
- * @access public
  * @return void
  */
 	public function testNoLink() {
@@ -104,7 +102,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With One One Level Sub Menu
 		$menu[0]['children'] = array(
@@ -130,7 +127,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With Two One Level Sub Menu
 		$menu[1]['children'] = array(
@@ -203,9 +199,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 	}
 
 /**
- * testWithLink Menu with URL
+ * TestWithLink Menu with URL
  *
- * @access public
  * @return void
  */
 	public function testWithLink() {
@@ -229,7 +224,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With One One Level Sub Menu
 		$menu[0]['children'] = array(
@@ -257,7 +251,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With Two One Level Sub Menu
 		$menu[1]['children'] = array(
@@ -334,9 +327,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 	}
 
 /**
- * testActiveClass Current Page Active class check
+ * TestActiveClass Current Page Active class check
  *
- * @access public
  * @return void
  */
 	public function testActiveClass() {
@@ -361,7 +353,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With One One Level Sub Menu
 		$this->MenuBuilder->here = '/item-1.2';
@@ -390,7 +381,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With Two One Level Sub Menu
 		$this->MenuBuilder->here = '/item-2.1';
@@ -469,9 +459,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 	}
 
  /**
- * testId Test Id
+ * TestId Test Id
  *
- * @access public
  * @return void
  */
 	public function testId() {
@@ -496,7 +485,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With One One Level Sub Menu
 		unset($menu[0]['id']);
@@ -527,7 +515,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);
-
 
 		// With Two One Level Sub Menu
 		$menu[1]['children'] = array(
@@ -606,9 +593,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 	}
 
 /**
- * testClass Test Class
+ * TestClass Test Class
  *
- * @access public
  * @return void
  */
 	public function testClass() {
@@ -690,9 +676,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 	}
 
 /**
- * testWithLink Menu with URL
+ * TestWithLink Menu with URL
  *
- * @access public
  * @return void
  */
 	public function testMultipleMenu() {
@@ -739,7 +724,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		);
 		$this->assertTags($result, $expected, true);
 
-
 		$result = $this->MenuBuilder->build('second-menu', array(), $menu);
 		$expected = array(
 			array('ul' => array('class' => 'second-menu', 'id' => 'second-menu')),
@@ -757,9 +741,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 	}
 
 /**
- * testPartialMatch Test Partial URL matching
+ * TestPartialMatch Test Partial URL matching
  *
- * @access public
  * @return void
  */
 	public function testPartialMatch() {
@@ -839,9 +822,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 	}
 
 /**
- * testPermissions Test URL permission
+ * TestPermissions Test URL permission
  *
- * @access public
  * @return void
  */
 	public function testPermissions() {

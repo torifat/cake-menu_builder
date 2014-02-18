@@ -14,7 +14,6 @@ class TestMenuGathererComponent extends MenuGathererComponent {
 
 }
 
-
 class TestMenuGathererController extends Controller {
 
 	public $components = array('MenuBuilder.TestMenuGatherer');
@@ -44,7 +43,7 @@ class Controller2Controller extends Controller {
 class MenuGathererComponentTestCase extends CakeTestCase {
 
 /**
- * setUp method
+ * SetUp method
  *
  * @return void
  */
@@ -61,7 +60,7 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 	}
 
 /**
- * tearDown method
+ * TearDown method
  *
  * @return void
  */
@@ -72,7 +71,7 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 	}
 
 /**
- * testGet method
+ * TestGet method
  *
  * @return void
  */
@@ -83,7 +82,7 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 	}
 
 /**
- * testItem method
+ * TestItem method
  *
  * @return void
  */
@@ -95,7 +94,7 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 	}
 
 /**
- * testMenu method
+ * TestMenu method
  *
  * @return void
  */
@@ -139,7 +138,7 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 	}
 
 /**
- * testSet method
+ * TestSet method
  *
  * @return void
  */

@@ -14,7 +14,6 @@ class MenuBuilderHelper extends AppHelper {
  * Helper dependencies
  *
  * @var array
- * @access public
  */
 	public $helpers = array('Html');
 
@@ -22,31 +21,27 @@ class MenuBuilderHelper extends AppHelper {
  * Array of global menu
  *
  * @var array
- * @access protected
  */
 	protected $_menu = array();
 
 /**
  * Current user group
  *
- * @var String
- * @access protected
+ * @var string
  */
 	protected $_group = null;
 
 /**
  * Current depth of menu
  *
- * @var Integer
- * @access protected
+ * @var integer
  */
 	protected $_depth = 0;
 
 /**
- * defaults property
+ * Defaults property
  *
  * @var array
- * @access public
  */
 	public $defaults = array(
 		'separator' => false,
@@ -62,10 +57,9 @@ class MenuBuilderHelper extends AppHelper {
 	);
 
 /**
- * settings property
+ * Settings property
  *
  * @var array
- * @access public
  */
 	public $settings = array(
 		'activeClass' => 'active',
@@ -85,7 +79,6 @@ class MenuBuilderHelper extends AppHelper {
 /**
  * Constructor.
  *
- * @access public
  */
 	public function __construct(View $View, $settings = array()) {
 		if (isset($settings['defaults'])) {
@@ -117,10 +110,9 @@ class MenuBuilderHelper extends AppHelper {
  * @param array optional Aditional Options.
  * @param array optional Data which has the key.
  * @return string HTML menu
- * @access public
  */
 	public function build($id = null, $options = array(), &$data = null, &$isActive = false) {
-		if (is_null($data)) {
+		if ($data === null) {
 			$data =& $this->_menu;
 		}
 
@@ -188,9 +180,8 @@ class MenuBuilderHelper extends AppHelper {
  * Returns a menu item HTML.
  *
  * @param array Array of menu item
- * @param int optional Position of the item.
+ * @param integer optional Position of the item.
  * @return string HTML menu item
- * @access protected
  */
 	protected function _buildItem(&$item, $pos = -1, &$isActive = false) {
 		$item = array_merge($this->defaults, $item);
@@ -199,7 +190,7 @@ class MenuBuilderHelper extends AppHelper {
 			return $item['separator'];
 		}
 
-		if (is_null($item['title'])) {
+		if ($item['title'] === null) {
 			return '';
 		}
 
@@ -269,7 +260,7 @@ class MenuBuilderHelper extends AppHelper {
 			$class = ' id="'.$item['id'].'"'.$class;
 		}
 
-		if (is_null($item['url'])) {
+		if ($item['url'] === null) {
 			$url = sprintf($this->settings['noLinkFormat'], $item['title']);
 		} else {
 			$url = '<a title="'.$item['title'].'" href="' . $this->Html->url($item['url']) . '">' . $item['title'] . '</a>';
