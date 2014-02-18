@@ -38,9 +38,3 @@ after_success:
 
 notifications:
   email: false
-
-# whitelist
-branches:
-  only:
-    - master
-    - feature/travis-ci

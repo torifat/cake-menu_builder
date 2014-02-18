@@ -7,24 +7,24 @@ class MenuGathererComponent extends Component {
 
 	protected $_menu = array();
 
-	/**
-	 * Initialize component
-	 *
-	 * @param Controller $controller Instantiating controller
-	 * @return void
-	 */
+/**
+ * Initialize component
+ *
+ * @param Controller $controller Instantiating controller
+ * @return void
+ */
 	public function initialize(Controller $controller) {
 		parent::initialize($controller);
 
 		$this->_controller = $controller;
 	}
 
-	/**
-	 * MenuGathererComponent::get()
-	 *
-	 * @param string $menu
-	 * @return array Menu data
-	 */
+/**
+ * MenuGathererComponent::get()
+ *
+ * @param string $menu
+ * @return array Menu data
+ */
 	public function get($menu = null) {
 		if ($menu === null) {
 			return $this->_menu;
@@ -33,30 +33,32 @@ class MenuGathererComponent extends Component {
 		return $this->_menu[$menu];
 	}
 
-	/**
-	 * Add an item to a menu at the specified position
-	 *
-	 * @return void
-	 */
+/**
+ * Add an item to a menu at the specified position
+ *
+ * @param string $menu
+ * @param array $item
+ * @param integer $index
+ * @return void
+ */
 	public function item($menu, $item = array(), $index = null) {
 		$this->_checkMenu($menu);
 
 		if ($index === null) {
 			$this->_menu[$menu][] = $item;
-
 			return;
 		}
 
 		$this->_menu = array_splice($this->_menu, $index, 0, $item);
 	}
 
-	/**
-	 * MenuGathererComponent::menu()
-	 *
-	 * @param mixed $name
-	 * @param mixed $menu
-	 * @return void
-	 */
+/**
+ * MenuGathererComponent::menu()
+ *
+ * @param mixed $name
+ * @param mixed $menu
+ * @return void
+ */
 	public function menu($name, $menu = array()) {
 		if (is_array($name)) {
 			foreach ($name as $key => $val) {
@@ -68,22 +70,22 @@ class MenuGathererComponent extends Component {
 		$this->_menu[$name] = $menu;
 	}
 
-	/**
-	 * MenuGathererComponent::set()
-	 *
-	 * @param mixed $menu
-	 * @return void
-	 */
+/**
+ * MenuGathererComponent::set()
+ *
+ * @param mixed $menu
+ * @return void
+ */
 	public function set($menu = array()) {
-		$this->_menu = (array) $menu;
+		$this->_menu = (array)$menu;
 	}
 
-	/**
-	 * MenuGathererComponent::_checkMenu()
-	 *
-	 * @param mixed $name
-	 * @return void
-	 */
+/**
+ * MenuGathererComponent::_checkMenu()
+ *
+ * @param mixed $name
+ * @return void
+ */
 	protected function _checkMenu($name) {
 		if (is_array($name)) {
 			foreach ($name as $val) {

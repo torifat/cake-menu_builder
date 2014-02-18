@@ -455,11 +455,11 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$this->assertTags($result, $expected, true);
 	}
 
- /**
-  * TestId Test Id
-  *
-  * @return void
-  */
+/**
+ * TestId Test Id
+ *
+ * @return void
+ */
 	public function testId() {
 		// Normal Menu
 		$menu = array(
@@ -594,7 +594,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testClass() {
-
 		// With Multi Level Sub Menu
 		$this->MenuBuilder->here = '/item-1.2';
 		$menu = array(
@@ -741,7 +740,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testPartialMatch() {
-
 		// With Multi Level Sub Menu
 		$this->MenuBuilder->here = '/item-1.2/1.2.3';
 		$menu = array(
@@ -821,7 +819,6 @@ class MenuBuilderHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testPermissions() {
-
 		// With Multi Level Sub Menu
 		$menu = array(
 			array(

@@ -86,7 +86,7 @@ class MenuBuilderHelper extends AppHelper {
 			unset($settings['defaults']);
 		}
 
-		$this->settings = array_merge($this->settings, (array) $settings);
+		$this->settings = array_merge($this->settings, (array)$settings);
 
 		if (!isset($View->viewVars[$this->settings['menuVar']])) {
 			return;
@@ -95,9 +95,9 @@ class MenuBuilderHelper extends AppHelper {
 		$this->_menu = $View->viewVars[$this->settings['menuVar']];
 
 		if (isset($View->viewVars[$this->settings['authVar']]) &&
-			isset($View->viewVars[$this->settings['authVar']][$this->settings['authModel']]) &&
-			isset($View->viewVars[$this->settings['authVar']][$this->settings['authModel']][$this->settings['authField']])) {
-			 	$this->_group = $View->viewVars[$this->settings['authVar']][$this->settings['authModel']][$this->settings['authField']];
+				isset($View->viewVars[$this->settings['authVar']][$this->settings['authModel']]) &&
+				isset($View->viewVars[$this->settings['authVar']][$this->settings['authModel']][$this->settings['authField']])) {
+			$this->_group = $View->viewVars[$this->settings['authVar']][$this->settings['authModel']][$this->settings['authField']];
 		}
 
 		parent::__construct($View, (array)$settings);
@@ -247,9 +247,9 @@ class MenuBuilderHelper extends AppHelper {
 		if (isset($item['class'])) {
 			if (is_array($item['class'])) {
 				$arrClass = array_merge($arrClass, $item['class']);
+			} else {
+				$arrClass[] = $item['class'];
 			}
-
-			else $arrClass[] = $item['class'];
 		}
 
 		if (!empty($arrClass)) {

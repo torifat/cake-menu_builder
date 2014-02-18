@@ -27,18 +27,25 @@ class AuthUser extends CakeTestModel {
 
 class Controller1Controller extends Controller {
 
-	public function action1() {}
+	public function action1() {
+	}
 
-	public function action2() {}
+	public function action2() {
+	}
+
 }
 
 class Controller2Controller extends Controller {
 
-	public function action1() {}
+	public function action1() {
+	}
 
-	public function action2() {}
+	public function action2() {
+	}
 
-	public function admin_action() {}
+	public function admin_action() {
+	}
+
 }
 
 /**
