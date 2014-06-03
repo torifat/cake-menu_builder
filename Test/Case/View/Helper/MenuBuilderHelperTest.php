@@ -42,6 +42,8 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			)
 		);
 
+		Configure::delete('Routing.prefixes');
+
 		$this->Controller = new Controller();
 		$this->Controller->set(compact('menu'));
 		$this->Controller->set(compact('guest'));
@@ -927,6 +929,185 @@ class MenuBuilderHelperTest extends CakeTestCase {
 						array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-2.1', 'title' => 'Item 2.1')), 'Item 2.1', '</a', '</li',
 					'</ul',
 				'</li',
+			'</ul'
+		);
+		$this->assertTags($result, $expected, true);
+	}
+
+/**
+ * testBootstrapMenu Test Bootstrap Themed Menu
+ *
+ * @return void
+ */
+	public function testBootstrapMenu() {
+		//no children
+		$options = array(
+			'childrenClass' => 'has-children',
+			'menuClass' => 'dashboard-menu',
+			'wrapperClass' => 'submenu',
+			'noLinkFormat' => '<a class="dropdown-toggle" href="#"><i class="fa fa-cog"></i><span>%s</span><i class="fa fa-chevron-down"></i></a>',
+		);
+		$result = $this->MenuBuilder->build('user', $options);
+		$expected = array(
+			'ul' => array('class' => 'user dashboard-menu', 'id' => 'user'),
+				'li' => array('class' => 'first-item'),
+				array('a' => array('title' => 'Item 1', 'href' => '/item-1')), 'Item 1', '</a',
+				'</li',
+				'<li',
+				array('a' => array('title' => 'Item 2', 'href' => '/item-2')), 'Item 2', '</a',
+				'</li',
+			'</ul'
+		);
+		$this->assertTags($result, $expected, true);
+
+		// With Multi Level Sub Menu
+		$menu = array(
+			array(
+				'title' => 'Item 1',
+				'url' => '/item-1',
+				'children' => array(
+					array(
+						'title' => 'Item 1.1',
+						'url' => '/item-1.1',
+						'permissions' => array('user'),
+					),
+					array(
+						'title' => 'Item 1.2',
+						'url' => '/item-1.2',
+						'permissions' => array('user', 'admin'),
+						'children' => array(
+							array(
+								'title' => 'Item 1.2.1',
+								'url' => '/item-1.2.1',
+							),
+							array(
+								'title' => 'Item 1.2.2',
+								'url' => '/item-1.2.2',
+							),
+						),
+					),
+				),
+			),
+			array(
+				'title' => 'Item 2',
+				'url' => '/item-2',
+				'children' => array(
+					array(
+						'title' => 'Item 2.1',
+						'url' => '/item-2.1',
+						'permissions' => array(''),
+					),
+					array(
+						'title' => 'Item 2.2',
+						'url' => '/item-2.2',
+						'permissions' => array('admin'),
+					),
+				),
+			),
+		);
+		$result = $this->MenuBuilder->build('test', $options, $menu);
+		$expected = array(
+			array('ul' => array('class' => 'test dashboard-menu', 'id' => 'test')),
+			array('li' => array('class' => 'first-item has-children')),
+				array('a' => array('title' => 'Item 1', 'href' => '/item-1')), 'Item 1', '</a',
+			array('ul' => array('class' => 'submenu')),
+			array('li' => array('class' => 'first-item')),
+				array('a' => array('title' => 'Item 1.1', 'href' => '/item-1.1')), 'Item 1.1', '</a',
+			'</li',
+			array('li' => array('class' => 'has-children')),
+				array('a' => array('title' => 'Item 1.2', 'href' => '/item-1.2')), 'Item 1.2', '</a',
+			array('ul' => array('class' => 'submenu')),
+			array('li' => array('class' => 'first-item')),
+				array('a' => array('title' => 'Item 1.2.1', 'href' => '/item-1.2.1')), 'Item 1.2.1', '</a',
+			'</li',
+			'<li',
+				array('a' => array('title' => 'Item 1.2.2', 'href' => '/item-1.2.2')), 'Item 1.2.2', '</a',
+			'</li',
+			'</ul',
+			'</li',
+			'</ul',
+			'</li',
+			'<li',
+			array('a' => array('title' => 'Item 2', 'href' => '/item-2')), 'Item 2', '</a',
+			'</li',
+			'</ul'
+		);
+		$this->assertTags($result, $expected, true);
+	}
+
+/**
+ * Test that target attribute works.
+ *
+ * @return void
+ */
+	public function testMenuWithTargetLinks() {
+		$options = array(
+			'menuClass' => 'dashboard-menu',
+		);
+		// With Multi Level Sub Menu
+		$menu = array(
+			array(
+				'title' => 'Item 1',
+				'url' => '/item-1',
+				'target' => '_blank',
+			),
+			array(
+				'title' => 'Item 2',
+				'url' => '/item-2',
+			),
+		);
+		$result = $this->MenuBuilder->build('test', $options, $menu);
+		$expected = array(
+			array('ul' => array('class' => 'test dashboard-menu', 'id' => 'test')),
+			array('li' => array('class' => 'first-item')),
+			array('a' => array('title' => 'Item 1', 'href' => '/item-1', 'target' => '_blank')), 'Item 1', '</a',
+			'</li',
+			'<li',
+			array('a' => array('title' => 'Item 2', 'href' => '/item-2')), 'Item 2', '</a',
+			'</li',
+			'</ul'
+		);
+		$this->assertTags($result, $expected, true);
+	}
+
+/**
+ * testImageMenu Test Images in Menu
+ *
+ * @return void
+ */
+	public function testImageMenu() {
+		// Necessary hack to prevent CakePHP from calculating wrong webroot dir for CLI testing on travis.
+		$this->MenuBuilder->request->webroot = '/';
+
+		$options = array(
+			'menuClass' => 'dashboard-menu',
+		);
+		// With Multi Level Sub Menu
+		$menu = array(
+			array(
+				'title' => 'Item 1',
+				'url' => '/item-1',
+			),
+			array(
+				'title' => 'Item 2',
+				'url' => '/item-2',
+				'image' => '/path/my-image.jpg',
+			),
+		);
+		$result = $this->MenuBuilder->build('test', $options, $menu);
+		$expected = array(
+			array('ul' => array('class' => 'test dashboard-menu', 'id' => 'test')),
+			array('li' => array('class' => 'first-item')),
+			array('a' => array('title' => 'Item 1', 'href' => '/item-1')), 'Item 1', '</a',
+			'</li',
+			'<li',
+			array('a' => array('title' => 'Item 2', 'href' => '/item-2')),
+			array('img' => array('src' => '/path/my-image.jpg', 'alt' => 'Item 2', 'title' => 'Item 2')),
+			array('span' => array('class' => 'label')),
+			'Item 2',
+			'</span',
+			'</a',
+			'</li',
 			'</ul'
 		);
 		$this->assertTags($result, $expected, true);

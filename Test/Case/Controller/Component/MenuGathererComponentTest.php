@@ -2,52 +2,6 @@
 App::uses('MenuGathererComponent', 'MenuBuilder.Controller/Component');
 App::uses('Controller', 'Controller');
 
-class TestMenuGathererComponent extends MenuGathererComponent {
-
-	public $name = 'MenuGatherer';
-
-	public $cacheKey = 'test_menu_storage';
-
-	public function getMenu() {
-		return $this->_menu;
-	}
-
-}
-
-class TestMenuGathererController extends Controller {
-
-	public $components = array('MenuBuilder.TestMenuGatherer');
-}
-
-class AuthUser extends CakeTestModel {
-
-	public $name = 'AuthUser';
-
-}
-
-class Controller1Controller extends Controller {
-
-	public function action1() {
-	}
-
-	public function action2() {
-	}
-
-}
-
-class Controller2Controller extends Controller {
-
-	public function action1() {
-	}
-
-	public function action2() {
-	}
-
-	public function admin_action() {
-	}
-
-}
-
 /**
  * MenuGathererComponent Test Case
  *
@@ -159,6 +113,82 @@ class MenuGathererComponentTestCase extends CakeTestCase {
 		$expected = $this->MenuGatherer->get();
 		$result = array('item1' => array('controller' => 'pages', 'action' => 'display', 'item1'));
 		$this->assertEquals($expected, $result);
+	}
+
+}
+
+class TestMenuGathererComponent extends MenuGathererComponent {
+
+	public $name = 'MenuGatherer';
+
+	public $cacheKey = 'test_menu_storage';
+
+/**
+ * TestMenuGathererComponent::getMenu()
+ *
+ * @return array
+ */
+	public function getMenu() {
+		return $this->_menu;
+	}
+
+}
+
+class TestMenuGathererController extends Controller {
+
+	public $components = array('MenuBuilder.TestMenuGatherer');
+}
+
+class AuthUser extends CakeTestModel {
+
+	public $name = 'AuthUser';
+
+}
+
+class Controller1Controller extends Controller {
+
+/**
+ * Controller1Controller::action1()
+ *
+ * @return void
+ */
+	public function action1() {
+	}
+
+/**
+ * Controller1Controller::action2()
+ *
+ * @return void
+ */
+	public function action2() {
+	}
+
+}
+
+class Controller2Controller extends Controller {
+
+/**
+ * Controller2Controller::action1()
+ *
+ * @return void
+ */
+	public function action1() {
+	}
+
+/**
+ * Controller2Controller::action2()
+ *
+ * @return void
+ */
+	public function action2() {
+	}
+
+/**
+ * Controller2Controller::admin_action()
+ *
+ * @return void
+ */
+	public function admin_action() {
 	}
 
 }
