@@ -16,7 +16,7 @@ Now it supports menus built with [ACL Menu Component](http://mark-story.com/post
 * Provide various useful CSS class
 * Multi-level menu support
 * Supports [ACL Menu Component](http://mark-story.com/posts/view/acl-menu-component) by [Mark Story](http://mark-story.com/)
-* CakePHP Unit Test (100% Code coverage)
+* CakePHP Unit Test (~~100% Code coverage~~)
 
 ## Requirements
 
