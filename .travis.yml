@@ -9,10 +9,10 @@ env:
   global:
     - PLUGIN_NAME=MenuBuilder
     - REQUIRE=""
-    - DB=mysql CAKE_VERSION=2.4
-  matrix:
-    - DB=mysql CAKE_VERSION=2.4
     - DB=mysql CAKE_VERSION=2.5
+  matrix:
+    - DB=mysql CAKE_VERSION=2.5
+    - DB=mysql CAKE_VERSION=2.6
 
 matrix:
   include:

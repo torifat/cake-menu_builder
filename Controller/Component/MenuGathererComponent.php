@@ -22,7 +22,7 @@ class MenuGathererComponent extends Component {
 /**
  * MenuGathererComponent::get()
  *
- * @param string $menu
+ * @param string $menu Menu
  * @return array Menu data
  */
 	public function get($menu = null) {
@@ -36,9 +36,9 @@ class MenuGathererComponent extends Component {
 /**
  * Add an item to a menu at the specified position
  *
- * @param string $menu
- * @param array $item
- * @param integer $index
+ * @param string $menu Menu
+ * @param array $item Item
+ * @param int $index Index
  * @return void
  */
 	public function item($menu, $item = array(), $index = null) {
@@ -55,8 +55,8 @@ class MenuGathererComponent extends Component {
 /**
  * MenuGathererComponent::menu()
  *
- * @param mixed $name
- * @param mixed $menu
+ * @param mixed $name Name
+ * @param mixed $menu Menu
  * @return void
  */
 	public function menu($name, $menu = array()) {
@@ -73,7 +73,7 @@ class MenuGathererComponent extends Component {
 /**
  * MenuGathererComponent::set()
  *
- * @param mixed $menu
+ * @param mixed $menu Menu
  * @return void
  */
 	public function set($menu = array()) {
@@ -83,7 +83,7 @@ class MenuGathererComponent extends Component {
 /**
  * MenuGathererComponent::_checkMenu()
  *
- * @param mixed $name
+ * @param mixed $name Name
  * @return void
  */
 	protected function _checkMenu($name) {

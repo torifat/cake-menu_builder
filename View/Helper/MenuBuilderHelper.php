@@ -34,7 +34,7 @@ class MenuBuilderHelper extends AppHelper {
 /**
  * Current depth of menu
  *
- * @var integer
+ * @var int
  */
 	protected $_depth = 0;
 
@@ -65,9 +65,11 @@ class MenuBuilderHelper extends AppHelper {
 		'activeClass' => 'active',
 		'firstClass' => 'first-item',
 		'childrenClass' => 'has-children',
+		'menuClass' => null,
 		'evenOdd' => false,
 		'itemFormat' => '<li%s>%s%s</li>',
 		'wrapperFormat' => '<ul%s>%s</ul>',
+		'wrapperClass' => null,
 		'noLinkFormat' => '<a href="#">%s</a>',
 		'menuVar' => 'menu',
 		'authVar' => 'user',
@@ -79,15 +81,16 @@ class MenuBuilderHelper extends AppHelper {
 /**
  * Constructor.
  *
+ * @param View $View The View this helper is being attached to.
+ * @param array $settings Configuration settings for the helper.
  */
 	public function __construct(View $View, $settings = array()) {
 		if (isset($settings['defaults'])) {
-			$this->defaults = array_merge($this->defaults, $settings['defaults']);
+			$this->defaults = $settings['defaults'] + $this->defaults;
 			unset($settings['defaults']);
 		}
 
-		$this->settings = array_merge($this->settings, (array)$settings);
-
+		$this->settings = $settings + $this->settings;
 		if (!isset($View->viewVars[$this->settings['menuVar']])) {
 			return;
 		}
@@ -106,9 +109,10 @@ class MenuBuilderHelper extends AppHelper {
 /**
  * Returns the whole menu HTML.
  *
- * @param string optional Array key.
- * @param array optional Aditional Options.
- * @param array optional Data which has the key.
+ * @param string $id Array key.
+ * @param array $options Aditional Options.
+ * @param array &$data Data which has the key.
+ * @param bool &$isActive Whether it is active or not.
  * @return string HTML menu
  */
 	public function build($id = null, $options = array(), &$data = null, &$isActive = false) {
@@ -117,7 +121,7 @@ class MenuBuilderHelper extends AppHelper {
 		}
 
 		if (!empty($options)) {
-			$this->settings = array_merge($this->settings, $options);
+			$this->settings = $options + $this->settings;
 		}
 
 		if (isset($data[$id])) {
@@ -157,6 +161,11 @@ class MenuBuilderHelper extends AppHelper {
 		if ($ulId && !$this->_depth) {
 			$class[] = $ulId;
 		}
+		if (!$this->_depth && !empty($this->settings['menuClass'])) {
+			$class[] = $this->settings['menuClass'];
+		} elseif ($this->_depth && !empty($this->settings['wrapperClass'])) {
+			$class[] = $this->settings['wrapperClass'];
+		}
 		if (!empty($options['class'])) {
 			$class[] = $options['class'];
 		}
@@ -172,15 +181,15 @@ class MenuBuilderHelper extends AppHelper {
 		} else {
 			$pad = $ret = '';
 		}
-
 		return sprintf('%s' . $this->settings['wrapperFormat'] . $ret, $pad, $class, $ret . $out . $pad);
 	}
 
 /**
  * Returns a menu item HTML.
  *
- * @param array Array of menu item
- * @param integer optional Position of the item.
+ * @param array &$item Array of menu item
+ * @param int $pos Position of the item.
+ * @param bool &$isActive Whether it is active or not.
  * @return string HTML menu item
  */
 	protected function _buildItem(&$item, $pos = -1, &$isActive = false) {
@@ -197,7 +206,6 @@ class MenuBuilderHelper extends AppHelper {
 		if (!empty($item['permissions']) && !in_array($this->_group, (array)$item['permissions'])) {
 			return '';
 		}
-
 		$children = '';
 		$nowIsActive = false;
 		if ($hasChildren = is_array($item['children'])) {
@@ -216,9 +224,9 @@ class MenuBuilderHelper extends AppHelper {
 		$check = false;
 		if (isset($item['url'])) {
 			if ($item['partialMatch']) {
-				$check = (strpos(Router::normalize($this->here), Router::normalize($item['url'])) === 0);
+				$check = (strpos(Router::normalize($this->request->here), Router::normalize($item['url'])) === 0);
 			} else {
-				$check = Router::normalize($this->here) === Router::normalize($item['url']);
+				$check = Router::normalize($this->request->here) === Router::normalize($item['url']);
 			}
 		}
 
@@ -261,9 +269,34 @@ class MenuBuilderHelper extends AppHelper {
 		}
 
 		if ($item['url'] === null) {
-			$url = sprintf($this->settings['noLinkFormat'], $item['title']);
+			$url = sprintf($this->settings['noLinkFormat'], __($item['title']));
 		} else {
-			$url = '<a title="' . $item['title'] . '" href="' . $this->Html->url($item['url']) . '">' . $item['title'] . '</a>';
+			if (is_array($item['url'])) {
+				$item['url'] += array('plugin' => false);
+				$prefixes = (array)Configure::read('Routing.prefixes');
+				foreach ($prefixes as $prefix) {
+					$item['url'] += array($prefix => false);
+				}
+			}
+
+			$target = '';
+			if (!empty($item['target'])) {
+				$target = ' target="' . $item['target'] . '"';
+			}
+
+			$linkClass = '';
+			if (!empty($item['linkClass'])) {
+				$linkClass = ' class="' . implode(' ', (array)$item['linkClass']) . '"';
+			}
+
+			$url = '<a title="' . h($item['title']) . '" href="' . $this->Html->url($item['url']) . '"' . $target . $linkClass . '>';
+			if (!empty($item['image'])) {
+				$url .= $this->Html->image($item['image'], array('alt' => $item['title'], 'title' => $item['title']));
+				$url .= '<span class="label">' . __($item['title']) . '</span>';
+			} else {
+				$url .= __($item['title']);
+			}
+			$url .= '</a>';
 		}
 
 		if ($this->settings['indentHtmlOutput']) {
