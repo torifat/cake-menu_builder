@@ -292,7 +292,7 @@ class MenuBuilderHelper extends AppHelper {
 			$url = '<a title="' . h($item['title']) . '" href="' . $this->Html->url($item['url']) . '"' . $target . $linkClass . '>';
 			if (!empty($item['image'])) {
 				$url .= $this->Html->image($item['image'], array('alt' => $item['title'], 'title' => $item['title']));
-				$url .= '<span class="label">' . __($item['title']) . '</span>';
+				$url .= '<span class="label">' . h(__($item['title'])) . '</span>';
 			} else {
 				$url .= __($item['title']);
 			}
