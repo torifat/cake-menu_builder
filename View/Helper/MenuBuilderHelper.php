@@ -297,8 +297,8 @@ class MenuBuilderHelper extends AppHelper {
 			}
 
 			if (!empty($item['image'])) {
-				$urlOptions['escape'] = false;
-				$labelTitle = (isset($urlOptions['escapeTitle']) && $urlOptions['escapeTitle']) ? h($item['title']) : $item['title'];
+				$urlOptions['escapeTitle'] = false;
+				$labelTitle = (isset($urlOptions['escape']) && $urlOptions['escape']) ? h($item['title']) : $item['title'];
 				$url = $this->Html->link($this->Html->image($item['image'], array('alt' => $item['title'])) . '<span class="label">' . $labelTitle . '</span>', $item['url'], $urlOptions);
 			} else {
 				$url = $this->Html->link($item['title'], $item['url'], $urlOptions);
