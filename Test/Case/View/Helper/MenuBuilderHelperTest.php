@@ -1102,7 +1102,7 @@ class MenuBuilderHelperTest extends CakeTestCase {
 			'</li',
 			'<li',
 			array('a' => array('title' => 'Item 2', 'href' => '/item-2')),
-			array('img' => array('src' => '/path/my-image.jpg', 'alt' => 'Item 2', 'title' => 'Item 2')),
+			array('img' => array('src' => '/path/my-image.jpg', 'alt' => 'Item 2')),
 			array('span' => array('class' => 'label')),
 			'Item 2',
 			'</span',

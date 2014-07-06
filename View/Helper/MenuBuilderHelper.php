@@ -279,24 +279,30 @@ class MenuBuilderHelper extends AppHelper {
 				}
 			}
 
-			$target = '';
+			$urlOptions = array('title' => $item['title']);
 			if (!empty($item['target'])) {
-				$target = ' target="' . $item['target'] . '"';
+				$urlOptions['target'] = $item['target'];
 			}
 
-			$linkClass = '';
 			if (!empty($item['linkClass'])) {
-				$linkClass = ' class="' . implode(' ', (array)$item['linkClass']) . '"';
+				$urlOptions['class'] = $item['linkClass'];
 			}
 
-			$url = '<a title="' . h($item['title']) . '" href="' . $this->Html->url($item['url']) . '"' . $target . $linkClass . '>';
-			if (!empty($item['image'])) {
-				$url .= $this->Html->image($item['image'], array('alt' => $item['title'], 'title' => $item['title']));
-				$url .= '<span class="label">' . h(__($item['title'])) . '</span>';
-			} else {
-				$url .= h(__($item['title']));
+			if (isset($item['escape'])) {
+				$urlOptions['escape'] = $item['escape'];
 			}
-			$url .= '</a>';
+
+			if (isset($item['escapeTitle'])) {
+				$urlOptions['escapeTitle'] = $item['escapeTitle'];
+			}
+
+			if (!empty($item['image'])) {
+				$urlOptions['escapeTitle'] = false;
+				$labelTitle = (isset($urlOptions['escape']) && $urlOptions['escape']) ? h($item['title']) : $item['title'];
+				$url = $this->Html->link($this->Html->image($item['image'], array('alt' => $item['title'])) . '<span class="label">' . $labelTitle . '</span>', $item['url'], $urlOptions);
+			} else {
+				$url = $this->Html->link($item['title'], $item['url'], $urlOptions);
+			}
 		}
 
 		if ($this->settings['indentHtmlOutput']) {
