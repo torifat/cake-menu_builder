@@ -32,7 +32,7 @@ Add the plugin to your project's `composer.json` - something like this:
 ```composer
   {
     "require": {
-      "torifat/cake-menu_builder": "2.0.1"
+      "torifat/cake-menu_builder": "2.0.3"
     }
   }
 ```
@@ -92,7 +92,7 @@ To use this helper add the following to your AppController:
     <?php
     ...
     var $helpers = array(..., 'MenuBuilder.MenuBuilder');
-    
+
     function beforeFilter() {
         ...
         // Define your menu
@@ -128,7 +128,7 @@ To use this helper add the following to your AppController:
                 ),
             ),
         );
-        
+
         // For default settings name must be menu
         $this->set(compact('menu'));
         ...
@@ -137,42 +137,42 @@ To use this helper add the following to your AppController:
 
 Now to build your `main-menu` use the following code in the View:
 
-    <?php 
+    <?php
         echo $this->MenuBuilder->build('main-menu');
     ?>
 
 You'll get the following output in the Home (/pages/home) page:
-    
-    <ul id="main-menu"> 
-        <li class="first-item active"><a title="Home" href="/pages/home">Home</a></li> 
-        <li><a title="About Us" href="/pages/about-us">About Us</a></li> 
-    </ul> 
+
+    <ul id="main-menu">
+        <li class="first-item active"><a title="Home" href="/pages/home">Home</a></li>
+        <li><a title="About Us" href="/pages/about-us">About Us</a></li>
+    </ul>
 
 And to build your `left-menu` use the following code in the View:
 
-    <?php 
-        echo $this->MenuBuilder->build('left-menu'); 
+    <?php
+        echo $this->MenuBuilder->build('left-menu');
     ?>
 
 You'll get the following output in your 'Item 4' (/items/view/4) page:
 
-    <ul id="left-menu"> 
-        <li class="first-item active has-children"> 
-            <a title="Item 1" href="/items/view/1">Item 1</a> 
-            <ul> 
-                <li class="first-item"> 
-                    <a title="Item 3" href="/items/view/3">Item 3</a> 
-                </li> 
-                <li class="active"> 
-                    <a title="Item 4" href="/items/view/4">Item 4</a> 
-                </li> 
-            </ul> 
-        </li> 
-        <li> 
-            <a title="Item 2" href="/items/view/2">Item 2</a> 
-        </li> 
+    <ul id="left-menu">
+        <li class="first-item active has-children">
+            <a title="Item 1" href="/items/view/1">Item 1</a>
+            <ul>
+                <li class="first-item">
+                    <a title="Item 3" href="/items/view/3">Item 3</a>
+                </li>
+                <li class="active">
+                    <a title="Item 4" href="/items/view/4">Item 4</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a title="Item 2" href="/items/view/2">Item 2</a>
+        </li>
     </ul>
-    
+
 You can pass optional parameter in `build` function like -
 
     <?php
@@ -197,10 +197,10 @@ You can provide advance options in the array like the following:
 if you do not provide any settings then the following settings will work.
 
     $settings = array(
-        'activeClass' => 'active', 
-        'firstClass' => 'first-item', 
-        'childrenClass' => 'has-children', 
-        'evenOdd' => false, 
+        'activeClass' => 'active',
+        'firstClass' => 'first-item',
+        'childrenClass' => 'has-children',
+        'evenOdd' => false,
         'itemFormat' => '<li%s>%s%s</li>',
         'wrapperFormat' => '<ul%s>%s</ul>',
         'noLinkFormat' => '<a href="#">%s</a>',
@@ -223,14 +223,14 @@ CSS classname for an item containing sub menu. *(default - `'has-children'`)*
 
 **evenOdd**
 If it is set to `true` then even/odd classname will be provided with each item. *(default - `false`)*
-    
-    <ul id="main-menu"> 
-        <li class="first-item odd"> 
-            <a title="Home" href="/pages/home">Home</a> 
-        </li> 
-        <li class="even"> 
-            <a title="About Us" href="/pages/about-us">About Us</a> 
-        </li> 
+
+    <ul id="main-menu">
+        <li class="first-item odd">
+            <a title="Home" href="/pages/home">Home</a>
+        </li>
+        <li class="even">
+            <a title="About Us" href="/pages/about-us">About Us</a>
+        </li>
     </ul>
 
 **itemFormat**
@@ -252,16 +252,16 @@ Format for empty link item *(default - `'<a href="#">%s</a>'`)*
 
 *Example Output (an extra item added to explain `noLinkFormat`)*
 
-    <div id="main-menu"> 
-        <div class="first-item"> 
-            <a title="Home" href="/pages/home">Home</a> 
-        </div> 
-        <div> 
-            <a title="About Us" href="/pages/about-us">About Us</a> 
+    <div id="main-menu">
+        <div class="first-item">
+            <a title="Home" href="/pages/home">Home</a>
         </div>
-        <div> 
+        <div>
+            <a title="About Us" href="/pages/about-us">About Us</a>
+        </div>
+        <div>
             Empty
-        </div> 
+        </div>
     </div>
 
 **menuVar**
@@ -342,7 +342,7 @@ Now we have to define permissions in our menu like this:
                 ),
             ),
             ...
-        );        
+        );
         // For default settings name must be menu
         $this->set(compact('menu'));
         ...
@@ -380,7 +380,7 @@ If you want to define some separator in your menu, below is a nice example of wh
     <?php
     ...
     var $helpers = array(..., 'MenuBuilder.MenuBuilder');
-    
+
     function beforeFilter() {
         ...
         // Define your menu
@@ -399,7 +399,7 @@ If you want to define some separator in your menu, below is a nice example of wh
                 ),
             )
         );
-        
+
         // For default settings name must be menu
         $this->set(compact('menu'));
         ...
@@ -409,16 +409,16 @@ If you want to define some separator in your menu, below is a nice example of wh
 
 *Example Output*
 
-    <dl id="main-menu"> 
-        <dt>Main Menu</dt> 
-        <dd class="first-item"> 
-            <a title="Home" href="/pages/home">Home</a> 
-        </dd> 
-        <dd> 
-            <a title="About Us" href="/pages/about-us">About Us</a> 
-        </dd> 
+    <dl id="main-menu">
+        <dt>Main Menu</dt>
+        <dd class="first-item">
+            <a title="Home" href="/pages/home">Home</a>
+        </dd>
+        <dd>
+            <a title="About Us" href="/pages/about-us">About Us</a>
+        </dd>
     </dl>
-    
+
 **More to come :)**
 
 ## ToDo
