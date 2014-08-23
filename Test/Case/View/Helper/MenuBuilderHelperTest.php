@@ -1113,4 +1113,30 @@ class MenuBuilderHelperTest extends CakeTestCase {
 		$this->assertTags($result, $expected, true);
 	}
 
+/**
+ * testSanitizeOfLinkTitle Test clearing link title attribute of undesirable characters
+ *
+ * @return void
+ */
+	public function testSanitizeOfLinkTitle() {
+		$menu = array(
+			array(
+				'title' => 'Item 1',
+				'url' => '/item-1'
+			),
+			array(
+				'title' => 'Item 2&nbsp;<i class="fa fa-caret-right"></i>',
+				'url' => '/item-2'
+			)
+		);
+		$result = $this->MenuBuilder->build(null, array(), $menu);
+		$expected = array(
+			'<ul',
+				array('li' => array('class' => 'first-item')), array('a' => array('href' => '/item-1', 'title' => 'Item 1')), 'Item 1', '</a', '</li',
+				'<li', array('a' => array('href' => '/item-2', 'title' => 'Item 2')), 'Item 2&amp;nbsp;&lt;i class=&quot;fa fa-caret-right&quot;&gt;&lt;/i&gt;', '</a', '</li',
+			'</ul'
+		);
+		$this->assertTags($result, $expected, true);
+	}
+
 }
